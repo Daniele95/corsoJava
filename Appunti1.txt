@@ -1,0 +1,450 @@
+FTP materiale:
+ftp://93.62.200.38/AcademyJava/Bibliografia/
+user: AcademyJava
+pass: academyJava2016
+
+
+192.168.18.105
+
+andare su esegui e scrivere 
+
+\\192.168.18.105
+
+per cartella condivisa massimo
+
+
+
+STORIA JAVA
+
+
+OOP (paradigma object oriented) = paradigma di programmazione basata su oggetti che comunicano tra di loro inviandosi dei messaggi
+
+comunicazione tra nodi basata sul trasferimento di controllo
+
+il punto di avvio è il metodo main
+
+diversa dalla programmazione procedurale (sequenziale) del C, che è un po' in disuso poiché limita la riutilizzabilità dei componenti
+(non ha le classi)
+
+è impossibile progammare in java secondo la logica procedurale.
+(alcuni linguaggio tipo C++ sono sia procedurali, sia ad oggetti).
+
+Java nasce all'inizio degli anni 90, ufficialmente si chiama Java dal 1995, nel 1997 la release 1.2 (da allora è detto anche Java 2)
+La logica di base è rimasta inalterata fino ad adesso (versione 10)
+noi installiamo la 8, poiché nessuna versione di Eclipse supporta correttamente la 9, che comunque ha poche novità rispetto alla 8 
+(versione stabile che si utilizza in genere sui progetti)
+La 10 è troppo nuova per essere utilizzata su progetti, si può comunque installare per vedere le novità (ma potrebbe avere qualche bug)
+
+La fortuna del linguaggio è dovuta anche al suo utilizzo web. Quindi per le interfacce grafiche si usa HTML, JSP, JSF 
+(piuttosto che interfaccia server Swing) o proprio in altri linguaggio (ad es. AngularJS).
+
+Perché utilizzare Java rispetto ad altri linguaggi??
+
+- La portabilità
+il codice compilato da JDK (bytecode) può essere eseguito su qualsiasi macchina!!!! Windows, Unix, Mac, ...
+per far girare Java mi serve una virtual machine, quel software che interpreta il bytecode
+ce n'è una per ogni sistema operativo
+
+- L'allocazione dinamica delle risorse, automatica
+Garbage Collector, presente nella VM e nella JDK, è l'allocatore automatico degli oggetti che istanziamo 
+allochiamo nella memoria EAP; questa cella avrà un riferimento (un'altra cella contenente l'indirizzo), che è il nome con cui chiamiamo l'oggetto
+Garbage Collector fa il corrispondente di malloc e free del C, in automatico -> rischio quasi nullo di ottenere errori Out Of Memory o Step Overflow
+(in alcuni casi si possono comunque avere)
+-> anche punto debole: non esiste il passaggio per riferimento
+il passaggio dell'oggetto a un metodo necessita comunque la copia dell'oggetto, è su essa che lavoro all'interno del metodo
+che non può lavorare direttamente sull'indirizzo: dunque non ho l'aritmetica dei puntatori tipica del C
+passaggio per copia detto anche passaggio per valore (value dell'oggetto, opposto ad address)
+
+- Linguaggio basato su framework
+molte cose sono già implementate (ad es., un algoritmo di ordinamento)
+molti framework web, anche di terze parti che possono essere integrati nel codice
+framework = insieme di librerie che servono per automatizzare dei processi
+
+- Vantaggio dell'open source, meno supporto tecnico diretto, ma molte più risorse online
+
+- Linguaggio sicuro
+il codice viene isolato all'interno della VM, il codice non ha accesso diretto alla macchina (alle sue unità logiche e di memoria) -> anche punto debole
+ma non è fatto per gestire cose di questo tipo
+Pacchetto Security, all'interno della libreria standard, per la gestione della sicurezza
+
+- Velocità
+non è più vero che è un linguaggio più lento poiché interpretato, grazie all'ottimizzazione di Garbage Collector e VM
+poca differenza rispetto a linguaggio compilati
+
+- Sintassi di base mutuata dal C
+
+- Uno dei linguaggio più performanti nell'ambito web, poiché
+l'inizializzazione delle risorse dinamiche necessarie per le richieste viene fatta una sola volta durante il ciclo di vita dell'applicazione
+
+
+Esistono 3 versioni di JDK. Noi useremo la Standard Edition, poi la Enterprise Edition, e poi c'è la Micro Edition
+
+SE:
+per applicazioni Standalone, lato client
+
+EE:
+applicazioni distribuite:
+l'applicazione opera su un server centrale, a cui sono connessi i client.
+applicazione distribuita, che usa il protocollo di rete (in particolare per appl. web TCP/IP per trasf dati, HTTP/HTTPS per trasferimento ipertesto)
+cioè un protocollo tramite il quale i client fanno richieste al server, il quale processa la richiesta e risponde, mediante l'applicazione, ai dati inviati 
+(una tipica risposta server è una pagina HTML)
+
+ME:
+applicazioni per gestione di micro dispositivi (ad esempio per la gestione software di palmari)
+
+
+
+INSTALLAZIONE JAVA
+
+settare la variabili d'ambiente: non ci vogliono le virgolette ""
+ci vuole il ; alla fine
+ci vogliono i simboli % al posto giusto
+
+
+
+
+
+PRIMO PROGRAMMA
+
+una classe è una struttura che serve per definire comportamenti, caratteristiche e funzionalità, per un insieme di oggetti
+l'oggetto è l'istanza fisica a partire da una struttura, la classe
+
+public : modificatore di accesso per la visibilità più ampia
+la classe che contiene il metodo di avvio dev'essere per forza pubblica
+il main dev'essere statico poiché non deve appartenere agli oggetti che verranno istanziati dalla struttura, ma alla struttura stessa
+
+parentesi: altgr + shift + [
+
+
+
+
+
+
+TIPI DI DATI
+
+Primitivi:
+	numerici:
+	INTERI
+
+			byte	8 bit	-128	127 	(non ci sono gli unsigned in Java)
+			short	16 bit 	-32768 	32767
+			int	32 bit	-2e9 	2e9
+			long	64bit	-9e18	9e18
+
+	modi per rappresentarli:
+		int i = 10;		decimale     
+		short s = 022;		ottale (aggiungere 0 all'inizio)
+		long l = 0x12acd;	esadecimale (0x)
+		int b = 0b01001010;	binaria (0b)
+
+
+	    LA PROMOZIONE AUTOMATICA
+
+		caso particolare che genera errore:
+		byte b = 50;  (50 è un int, ma riesce a inserirlo dentro un byte)
+		b = b * 2; (sarebbe un byte = byte * int: per convertire l'operazione a destra in un tipo prende il tipo più alto,
+				quindi è come se stessi scrivendo byte = int, cioè errore di casting)
+		b = ( byte ) ( b * 2 );  è la riga corretta
+
+		long l = 10000000000; (10e9) è considerato int, devo scrivere:
+		long l = 10000000000L; (castare a long) . invece se ho 2 miliardi
+		long l =  2000000000; poiché 2 miliardi ci sta nell'int
+			(dalla versione 7 per chiarezza posso scrivere long l = 10_000_000_000L; per chiarezza, solo per long, no per int)
+
+		in generale devo fare il casting quando supero il limite di spazio un tipo.
+		infatti il Java tratta tutti gli interi che scrivo come interi, e se gli assegno un altro tipo può fallire a fare il casting.
+		(il Java opera la promozione automatica dei tipi, cioè in un op matematica (o1 . o2) il tipo finale è il tipo più grande tra i due
+		se la parte sinistra è un altro tipo è necessario operare il casting
+
+		ad es.
+		short s = 30000; (letto come int, ci sta anche nello short)
+		s = s * 10; (la parte destra è letta come int)
+		int r = s * 10;  è corretto
+		short r = (short)(s+1); qui è necessario il casting poiché a destra ho un int
+
+	    ERRORI ARITMETICI /ECCEZIONI
+		errori con interi:
+		int r = 10 / 0;
+		dà sempre ArithmeticException
+		con gli Fp non si ottiene mai questa eccezione
+
+
+	FLOATING POINT
+		Fp (floating point o virgola mobile)
+
+			float	4byte
+			double	8byte
+		
+		sempre soggetti a errori di approssimazione:
+		2.0 - 1.1 da 0.899999999 anche se il calcolo non lo richiederebbe
+		per calcoli di precisioni devo utilizzare invece BigDecimal
+
+		anche qui
+	    PROMOZIONE AUTOMATICA
+		float f = 59.9; (è sottinteso che 59.9 è un double), in generale
+
+		interi promossi a int, Fp promossi a double, semmai scrivo
+		float f = 59.9F;
+
+		oppure
+		double d = 59.9 D; (ma in realtà è già sottinteso)
+
+	    ERRORI/ECCEZIONI
+		10.0 / 0.0 non restituisce errore, ma il tipo Infinity del Java!
+		la radice di un numero negativo o comunque operazioni il cui risultato non è nei reali
+		 restituisce NaN (not a number)
+		in generale NON OTTERRò MAI ECCEZIONI NEL CALCOLO A VIRGOLA MOBILE
+
+
+	    LISTA CONVERSIONI DIRETTE SENZA PERDITA DI PRECISIONE
+				char		
+				  |
+		byte -> short ->int -> long
+				  |
+			float -> double
+
+		char <-> int (il carattere è la rappresentazione intera dei caratteri secondo l'ASCII)
+		double <-> int
+
+	    Conversioni possibili ma con perdita di precisione:
+		int -> float
+		long -> float
+		long -> double
+
+		(tipo quando faccio byte b = 10; non perdo precisione, poiché l'intero 10 sta anche nel byte)
+
+
+		i * fp
+		9.20 * 10 -> double		
+		in generale quando mischio interi e valori a virgola mobile vince la virgola mobile
+
+
+	CARATTERE
+
+		char	16 bit	\u0000	\uFFFF
+		questo è il PUNTO CODICE (quattro cifre esadecimali precedute da u): rappresentazione di un carattere
+		secondo lo standard di codifica scelto dal linguaggio di programmazione
+		lo standard di codifica scelto dal Java è l' UNICODE, che utilizza tutti i caratteri a 2 byte, mentre l'ASCII usa 1 carattere = 1 byte.
+		ad es se ho altri alfabeti l'ASCII non basta più:
+		Koi-8 per la Cina, Big-5 per il mondo arabo, ecc.
+		In Java invece hanno usato l'UNICODE per comprenderli tutti!! ad es i primi 255 caratteri unicode coincidono con il codice ASCII
+
+		come si scrivono:
+		char c = 'c';
+		char chiocciola = '@';
+		c'è però il rischio che qualche sistema operativo non riesca a processare questo tipo di scrittura 
+		(perché ha una diversa localizzazione dei simboli)
+		quindi scriverò piuttosto
+		char chiocciola = '\u0040';
+
+		inoltre quando si scrivono le stringhe, con
+		System.out.println(" ... ") conviene usare il punto codice (senza la u?)
+		il carattere è anche un valore numerico, che rappresenta la posizione dal carattere nella codifica.
+
+		SEQUENZE DI ESCAPE
+		\b   	backspace
+		\t	tabulazione (tab)
+		\n	a capo
+		\r	ritorno di carrello (torna all'inizio della stringa)
+		\"	serve per scrivere virgolette all'interno della stringa
+		\'	idem
+		\\	è il backslash (usato ad esempio negli indirizzi URL, ad es ("C:\\Program Files\\Java")
+
+
+
+
+
+	BOOLEANE
+
+	boolean	8 bit	true/false
+
+
+
+REFERENCE
+
+
+il nome che viene dato al puntatore che allocherà i dati dell'oggetto che viene istanziato in memoria mediante il codice
+esempio
+
+public class Auto {
+	// ecco gli attributi o campi d'istanza della classe: (potrei mettere anche il modificatore di accesso public)
+	Motore motore;
+	Ruote ruote;
+	int cilindrata;	
+	int final NUMERO_RUOTE; 
+		// il modificatore final definisce una costante
+		// solo nelle costanti posso usare il _ invece del camelCase.
+	//
+
+	// ecco i metodi:
+	public void frena() {
+		System.out.println("Frena");
+	}
+	public void avvia() {
+		System.out.println("Avvia");
+	}
+
+}
+
+public class AutoTest {
+	public static void main( String args[] ) {
+		Auto fiat500 = new AUTO();
+		fiat500.frena();	
+		ferrari.cilindrata = 4000; // questo posso farlo poiché possiedo la reference dell'oggetto
+		// ottenuta con new
+	}
+}
+
+il REFERENCE è il nome univoco che ti recupera tramite il puntatore l'oggetto salvato in memoria
+
+
+ENUMERAZIONE
+è un elenco di costanti, che posso richiamare. non posso sbagliare, definendo valori che non appartengono a questo insieme di costanti.
+
+Enum Trimestre { GENNAIO, FEBBRAIO, MARZO };
+
+Trimestre t = Trimestre.FEBBRAIO;
+
+Enum MetodiP { CARTA, BONIFICO, ... };
+
+
+String mod = "asdfasdf";
+
+
+
+
+il pacchetto Java.lang è importato in maniera predefinita all'interno del codice
+
+uso i comandi 
+
+package com.gft.esempi;  (anche qui MAI la maiuscola)
+per creare un pacchetto
+
+import java.sql.*; per importare classi
+
+
+
+
+
+nota bene
+i CAMPI D'ISTANZA delle classi sono sempre automaticamente inizializzati, tipo l'int i di
+
+public class Esempio {
+	int i;
+	public void asd (){
+		int i = 1;// questa è un'altro tipo di variabile, detta variabile locale, o di stack
+		// questa non viene inizializzata automaticamente
+	}
+}
+
+i valori numerici a 0, i booleani a false, i char a '\u0000', gli oggetti al valore null
+se poi tento di usare questi valori nei metodi della classe, cioè tento di leggere un oggetto nullo,
+ottengo NullPointerException
+
+
+
+operatore ternario:
+
+cond ? seVera : seFalsa; (imposto una condizione, do istruzioni per il caso vera e per il caso falsa)
+
+
+OPERATORI BITWISE
+
+&	
+|	
+^ (XOR)
+
+ad es se scrivo if(x<10 && x<100), viene controllata solo la prima, già sufficiente
+ma se uso solo &,
+if(x==10 & ++y<20) , in questo caso anche se la prima è falsa controllo comunque la seconda
+if(x==10 && ++y<20), in questo caso se la prima è falsa, non è detto che sarà valutata la seconda
+
+la stessa cosa vale anche con l'|
+
+lo ^ è per forza bitwise, poiché restituisce false se le espressioni sono diverse, quindi deve per forza valutarle entrambe
+
+
+Operatore ISTANCEOF
+
+if ( fiatPanda istanceof Auto )
+
+confronto tra due oggetti:
+
+if ( obj.equals ( obj2 ) ) 
+
+poiché il if ( obj == obj2 ) controlla se fanno riferimento allo stesso indirizzo di memoria
+cosa che non accade mai, quindi è inutile
+
+
+inoltre per ogni classe che creo, essa eredita dalla classe Object
+
+public class Esempio extends Object
+
+
+CLASSI WRAPPER
+
+ad esempio per gli interi
+int i = 10
+ma ho anche l'oggetto
+Integer i = 10;
+questa classe ha dei metodi
+
+String s = "10";
+
+voglio aggiungerci 5? faccio un cast mediante Integer
+int x = Integer.parseInt ( s );
+
+x + 5
+
+esistono i seguenti wrapper:
+
+byte	Byte
+short	Short
+int	Integer
+long	Long
+double	Double
+float	Float
+boolean	Boolean
+char 	Character
+char[]	String
+
+Integer i = new Integer ( 3 ) ;  questa azione si chiama "boxing", permette di aggiungere funzionalità a un dato primitivo
+
+ciò si automatizza con l'autoboxing:
+
+Integer i = 3;
+String s = "10";
+così non devo scrivere ogni volta New Class
+
+operazione contraria: Unboxing, che mi permette ad es di fare i++ su un Integer i
+quest'operazione è il riassunto di
+int x = i.intValue();
+x++;
+
+richiare qualsiasi operatore aritmetico sulla classe wrapper corrispondente a un dato primitivo, forza sempre l'Unboxing
+
+
+
+ciclo foreach è
+
+for ( elemento var : collection ) {}
+
+esempio
+
+
+Impiegati[] imp = {.....}
+
+for(int i = 0; i<= imp.length; i++) {
+	Impiegato dipendente = (Impiegato) imp [i];
+	dipendente ();
+}
+
+
+oppure col foreach:
+
+for ( Impiegato dipendente : imp ) {
+	dipendente.calcolaStipendio();
+}
+
+
+

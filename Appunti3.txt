@@ -1,0 +1,232 @@
+I COSTRUTTORI
+
+...
+
+
+
+
+
+LO STATIC
+
+
+
+modificatore static (per attributi o metodi):
+
+permette, se importo la classe come statica, di richiamare suddetti metodi o oggetti senza fare riferimento alla classe
+
+
+
+modificatore final:
+
+è l'ultima nella catena dell'ereditarietà
+
+non può essere estesa
+
+
+
+nota bene:
+
+se eredito e faccio Override di un metodo, lo ridefinisco nella sottoclasse
+scrivendo sopra @Override (è un'annotation, non obbligatoria, ma mi garantisce
+che sto facendo davvero l'Override (è darà errore se il metodo non è un Override, ma ha un nome nuovo))
+
+
+
+POLIMORFISMO
+
+posso creare un array di una classe R 
+tipo R[]
+e riempirlo anche con classi T
+se T eredita da R! (non il contrario!)
+
+quindi 
+class R
+metodo()
+	return 1;
+
+public class T extends R
+@Override
+public int metodo()
+	return 2;
+
+
+e posso fare 
+R r1 = new R();
+T t1 = new T();
+
+R[] array = new R[2];
+
+array[0] = r1;
+array[1] = t1;
+
+for (R elemento : array)
+	System.out.println(elemento.metodo());
+ottengo
+1, 2
+con una sola chiamata a un metodo ottengo risultati diversi!!
+
+se invece in T non avessi Override di metodo(), il risultato sarebbe
+1,1
+poiché come metodo() userebbe quello della classe super() R (quella da cui eredita)
+
+
+il final() serve per bloccare la sovrascrittura dei metodi (impedisce l'Override)
+
+
+
+
+
+
+UTILIZZI DEL THIS
+
+uso ovvio: per inizializzare i campi d'istanza
+
+altro caso: quando si richiama il costruttore nella stessa classe
+
+terzo caso: quando si chiama il this da solo senza accedere a niente come attributi.
+
+ad es se faccio
+System.out.println(this)
+il this fa una chiamata implicita al toString in maniera automatica, se è implementato
+se non è implementato stamperà tipoClasse@indirizzo (indirizzo di memoria su cui è salvato l'oggetto)
+
+r1.getClass() ritorna il tipo di oggetto
+r1.getClass().getSimpleName() dice in maniera dinamica il tipo di un oggetto
+r1.getClass().getName() dice anche il nome del pacchetto davanti
+
+
+RAPPORTI CHE CI POSONO ESSERE TRA LE CLASSI
+
+
+importante saperli poiché sono indicati con un componente grafico nei diagrammi UML (linguaggio unificato per la modellazione di oggetti e di componenti)
+DIAGRAMMI UML
+nome classe		
+attributo
+metodo
+
+
+nome classe segnato col nome del pacchetto, tipo com.gft.nome  ; quest'ultimo 'nome' va in corsivo se la classe è astratta
+se invece il nome del pacchetto è tr <<com.gft.nome>>, è un'interfaccia
+
+l'attributo si segna come nome:tipo
+davanti all'attributo si mette il tipo di visibilità:
++ pubblico
+# protetto
+tilde default
+' private
+
+per il metodo si mette:
++nome(nomeParametro:tipo, nomeParametro:tipo):tipo
+(al posto del + si mette l'attributo)
+
+si disegnano trattini tra le varie classi, che dipendono dal tipo di rapporto
+
+linea dritta senza simboli particolari: ASSOCIAZIONE
+assieme alla linea si mette in fondo la cardinalità, cioè il numero di volte in cui viene istanziata 
+(quante istanze di una vengono usata dall'altra, e viceversa)
+possono essere 1:1, 
+1:10, 
+1:* (numero non preciso di elementi, magari collezione dinamica in cui può essere inserita n volte)
+1: 5..20 (range definito, si indica con ..)
+*: 20..*
+
+
+
+associazione
+	è il rapporto più debole che può esistere tra due componenti:
+	un componente ottimizza delle funzionalità di un altro componetne per poterne richiamare dei metodi
+	(A istanzia B per poterne richiamare dei metodi, cosa che facciamo sempre)
+
+dipendenza
+	freccia e linea tratteggiata
+	un componente dipende nel funzionamento da un altro componente
+	in base al controllo fatto sullo stato della classe B, la classe A si comporterà in maniera differente
+	esempio
+	connessione a un database:
+	classe generatore DB,
+	e classe DAO che registra i componenti da utilizzare
+	il generatore genera un valore progressivo da utilizzare nelle sequenze 
+	della tabella dove dobbiamo inserire la sequenza primaria del record
+	il DAO dipende dal valore generato dal Generatore che darà l'elemento da inserire nella chiave primaria della tabella
+
+ereditarietà
+	triangolino vuoto verso la classe da cui eredito
+	(la freccia va verso la super() classe();
+
+realizzazione
+	triangolino aperto e linea tratteggiata
+	è utilizzata se una classe realizza un interfaccia
+	si ha sempre quando una classe IMPLEMENTS (invece che extends) un'altra
+
+composizione
+	simile all'aggregazione, ma più forte.
+	l'elemento principale, il macro elemento che aggrega gli altri, perde la sua funzionalità
+	se il componente sottostante viene meno.
+	si indica con un trattino che termina con un rombetto pieno
+
+aggregazione
+	una classe possiede come attributi altri elementi definiti come classi
+	si rappresenta con un trattino che termina con un rombetto vuoto, verso la classe che
+	aggrega degli elementi nei campi d'istanza
+	i componenti aggregati sono interscambiabili:
+	la macro classe che li aggrega continua a funzionare anche se vengono meno,
+	basta che ne rimanga almeno uno.
+
+
+
+DOMANDA: COM'è POSSIBILE CHE IL TOSTRING() CHIAMI UNA CLASSE MA RITORNA UNA STRINGA?
+
+
+
+
+
+
+
+
+concetti fondamentali:
+
+GENERALIZZAZIONE
+da vari elementi ne definisco uno, detto "super tipo"
+se da delle classi posso generalizzare e identificare un super tipo, sto togliendo funzionalità,
+allo scopo di identificare solo le caratteristiche in comune
+è legata alla CLASSE ASTRATTA
+
+
+SPECIALIZZAZIONE
+da un elemento principale ne definisco altri più specializzati incrementando la funzionalità dell'elemento principale.
+ad esempio se da una classe Impiegato creo le sottoclassi Dirigente, Segretaria, LavoratoreAProgetto, cioè 
+elementi che hanno attributi in più o caratteristiche ridefinite rispetto all'elemento principale
+(vado a incrementare le funzionalità dell'elemento di base: i sottotipi non possono mai avere mai funzionalità del super tipo)
+(ad es. se l'Impiegato ha lo stipendio, nessuna delle sottocategorie può non avere lo stipendio)
+è legata all'EREDITARIETà
+
+l'EREDITARIETA'
+
+si applica con la parola chiave extends
+
+public Dirigente extends Impiegato{}
+
+
+
+concetto chiave del polimorfismo:
+
+BINDING DINAMICO
+
+capacità del compilatore in fase di runtime quale metodo richiamare in base all'oggetto ritornato dalla collezione polimorfica
+
+
+CLASSI ASTRATTE
+
+una classe astratta è una classe tale che non può essere istanziata.
+
+il componente è astratto quando da solo non fornisce alcuna funzionalità completa all'interno della logica di business
+non può essere istanziata.
+
+al suo interno posso creare dei prototipi che a loro volta possono essere definiti come astratti
+un PROTOTIPO ha solo le tonde e poi il ;
+il prototipo obbliga le classi che estendono la classe astratta a implementare quel metodo
+
+ad es
+public abstract class Nome {
+	public abstract int metodo();
+}

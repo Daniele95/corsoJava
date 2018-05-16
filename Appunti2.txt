@@ -1,0 +1,266 @@
+// chiamo tutte le classi con davanti Esempio per non sovrascrivere nomi di classi già esistenti!!
+
+
+date:
+
+
+
+java.util.Date -> utc
+java.util.Date -> dATABASE
+java.util.Calendar ->
+
+.getMonth (deprecato)
+
+
+
+ERRORI
+
+
+situazioni impreviste in seguito alla compilazione o durante runtime
+
+
+			Throwable
+	
+	Exception				Error
+può essere catturata e gestita		non può esserlo (il programma termina)
+
+-RunTimeException			-AWTError
+(non verificate o Unchecked)		(refresh errato dell'interfaccia grafica dell'applicazione creata in Java (Swing o RT))
+					(in questo caso la UI può andare in freeze dovuto a malfunzionamento della VM 
+					che ridisegna in modo errato i componenti)
+					(non rimane che riavviare l'applicazione)
+
+-IOException				-VirtualMachineError
+(verificate o Checked)			ad es. lo StackOverflowError, sovraccaricamento dello stack delle chiamate 
+					usate per allocare i metodi. le chiamate ai metodi sono gestite nella memoria
+					STACK, come in una pila. la memorizzazione di una chiamata a un metodo nello stack è detto
+					RECORD DI ATTIVAZIONE. se ho ad es. un loop for infinito in cui chiamo continuamente un metodo
+					saturo rapidamente lo stack.
+
+					altro esempio: l'OutOfMemoryError, quando non c'è più memoria nell'Heap, la memoria del Java, di default 64 Mega
+					ad es se ho dei Big Data, devo necessariamente incrementare l'allocazione della memoria Heap.
+					(c'è un comando apposito)
+					ovviamente non posso catturare questa eccezione
+
+
+
+esempio:
+
+int x = in.nextInt();
+int y = in.nextInt();
+
+int totale = x / y;
+
+(eccezione non verificata) -> compila e poi controlla l'eccezione durante l'esecuzione
+
+
+altro esempio:
+
+voglio aprire una connesione con il DataBase
+carico il driver per la connessione con il DataBase:
+
+class.forName( "oracle.jdbc.driver.OracleDriver" );
+il driver dev'essere aggiunto all'applicazione, se l'applicazione non trova la classe driver si ha
+ClassNotFoundException
+
+(eccezione verificata) -> se non gestisco l'eccezione non compilerà nemmeno.
+
+come controllo l'eccezione:
+
+// le eccezioni verificate devono sempre essere gestite, anche se non si verificano
+
+public void lettura() {
+
+
+try {
+	letturafile;
+	.. operazionilettura..
+
+} catch (ClassNotFoundException | SQLException  exc) {
+	exc.getMessage();
+	System.out.println("Impossibile creare il record");
+	exc.printStackTrace(); // serve per ricostruire lo stack delle chiamate a partire dal metodo che ha lanciato l'eccezione
+			// Se ci fosse un'unica classe all'interno del progetto, gestire l'eccezione sarebbe facile
+			// se ho tante classi, magari un metodo richiama una componente che ne richiama un altra...
+			// devo capire qual'è proprio la componente che ha lanciato l'eccezione
+	exc.getErrorCode();
+}
+(è più corretto usare un | piuttosto che gestirle in due blocchi diversi)
+(non ha senso invece usare l' || poiché ne verrebbe valutata solo una)
+catch (IOException exc) {
+	...
+}
+catch(Exception | FileNotFoundException  exc) {	
+
+} finally{
+ 	// questo blocco sara sempre eseguito indipendentemente che venga lanciata l'eccezione o meno
+	// questo blocco è facoltativo
+	// in ogni caso devo chiudere il flusso di lettura
+	lettura.close();
+}
+
+
+}
+
+il blocco deve seguire la gerarchia delle eccezioni!! altrimenti gli ultimi blocchi non verranno valutati
+e l'eccezione non sarà correttamente classificata. la gerarchia corretta è
+java.lang.Object
+	Java.lang.Throwable
+		java.lang.Exception
+			java.lang.ReflectiveOperationException
+				java.lang.ClassNotFoundException
+
+Altre due parole chiave:
+
+throws
+
+se scrivo 
+public void lettura() throws IOException, FileNotFoundException {
+}
+posso tirare via tutti i blocchi try/catch! le eccezioni non saranno gestite in questo metodo, ma
+nel componente che farà la chiamata al metodo
+(insomma il throws delega chiamate alla gestione delle eccezioni)
+a quel punto chiamerò il metodo in questo modo
+
+try {
+	lettura();
+} catch...
+
+
+un'applicazione è data da 3 livelli:
+- presentation layer (o frontend)
+	 interfaccia grafica: HTML, JSP, JSF, XHTML (basate su XML)
+
+- business logic (o middle end)
+	i dati passano dal frontend al business logic tramite un controller, ottenuto tramite un filter
+	i dati passano in modo diretto dal Data layer
+	gestisce tutta la logica di funzionamento del progetto
+
+- data layer (accesso ai dati)
+	Data Access Object: DAO classi di java
+	si connettono al database relazionale tramite "connection pooling"
+
+validazione dati può essere fatta nella PL (più rapida), o nella BL (più sicura poiché fatta nel server)
+
+la gestione delle eccezioni deve essere fatta tutta nella business logic
+non è corretto gestirle nel DAO, poiché se cambia il DataBase cambia anche il DAO (le eccezioni invece devono rimanere le stesse)
+
+il DAO è anche un Design Pattern, cioè una tecnica di programmazione per risolvere problemi ricorrenti.
+nella Standard Edition ci sono 23 Design Pattern
+
+
+
+
+throw
+
+if ( cond ) {
+	throws new SQLException("test");
+}
+non ha molto senso
+
+in Java si può creare una classe personalizzata per gestire le eccezioni
+
+public class MyException extends Exception {
+	(usa l'ereditarietà da Exception)
+}
+
+Adesso fare questo ha senso:
+if ( cond ) {
+	throws new MyException() ;
+}
+
+oppure posso fare
+try {
+} catch(SQLException exc) {
+	throw new MyException();
+}
+
+
+
+ESEMPIO TRY/CATCH
+
+Scanner in = new Scanner( System.in );
+
+try{
+	System.out.println( "Inserisci l\'età" );
+	int eta = in.nextInt();
+// se al posto di un numero come età viene data una cosa tipo "asdfsdfb"
+} catch(InputMismatchException exc) {
+	System.out.println( "Errore nell\'immissione del dato" );
+	...
+}
+
+
+
+USO DEL LOGGER
+
+
+Esistono delle priorità dei log:
+SEVERE
+WARNING
+INFO
+CONFIG
+FINE
+FINER
+FINEST
+
+ALL li attiva tutti
+
+
+XML: come HTML, ma i tag servono a definire strutture dati
+
+<cliente> // root
+	<nome>Massimo</nome>
+	<cognome>Rossi</cognome>
+</cliente>
+
+il logger stampa i file in XML, file di interscambio tra applicazioni differenti
+
+
+
+
+CONTROLLO TRAMITE ASSERT
+
+assert statoCredito >= spesa;
+
+
+ma devo metter il parametro
+
+-ea
+
+in tasto destro sulla classe -> run as -> run configuration
+
+
+
+
+
+
+altro argomento
+
+I MODIFICATORI DI ACCESSO
+
+servono per regolare l'accesso a certe componenti nell'applicazione
+sono:
+
+public
+protected
+default|package
+private
+
+
+
+nei progetti posso avere anche 500 classi!!!!!!!!
+quindi è necessario suddividere il progetto in pacchetti!!!!!!
+
+se una classe A protected è protected può essere visibile solo all'interno del pacchetto in cui è
+OPPURE da una classe B di un altro pacchetto SOLO se B eredita da A!! (B extends A)
+
+il modificatore di default|package (quello predefinito, se non scrivo niente) fa si che la classe sia IN OGNI CASO
+visibile solo all'interno dello stesso pacchetto.
+
+il private, più restrittivo di tutti, dà visibilità solo all'interno della classe.
+
+
+
+non posso avere un costruttore pubblico di una classe default (non ha molto senso)
+ma posso avere un metodo protected di una classe public.
