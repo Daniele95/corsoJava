@@ -215,12 +215,16 @@ BINDING DINAMICO
 capacità del compilatore in fase di runtime quale metodo richiamare in base all'oggetto ritornato dalla collezione polimorfica
 
 
+
+
+
 CLASSI ASTRATTE
 
 una classe astratta è una classe tale che non può essere istanziata.
+è una classe contenente prototipi, che devono essere implementati.
 
 il componente è astratto quando da solo non fornisce alcuna funzionalità completa all'interno della logica di business
-non può essere istanziata.
+non può essere istanziata. può solo essere estesa.
 
 al suo interno posso creare dei prototipi che a loro volta possono essere definiti come astratti
 un PROTOTIPO ha solo le tonde e poi il ;
@@ -230,3 +234,17 @@ ad es
 public abstract class Nome {
 	public abstract int metodo();
 }
+
+se il costruttore è già definito nella classe astratta 
+
+	public abstract int metodo() {}
+
+le classi che la estendono lo ereditano.
+
+se metto almeno un prototipo, allora devo fare la classe astratta.
+
+un solo caso in cui non è necessario sovrascrivere il prototipo:
+quando una classe astratta estende un'altra classe astratta.
+
+
+

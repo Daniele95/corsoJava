@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 public class Esempiodate {
 
 	public static void main(String[] args) {
-		Studente1 s = new Studente1("massimo","bianchi",2000,10,1);
+		Studente s = new Studente("massimo","bianchi",2000,10,1);
 		System.out.println(s.nome);
 		System.out.println(s.cognome);
 		

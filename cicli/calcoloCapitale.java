@@ -2,7 +2,7 @@ package com.gft.esempi.cicli;
 
 import java.lang.Math;
 
-public class calcoloCapitale {
+public class CalcoloCapitale {
 	public static void main(String[] args) {
 
 		System.out.println("Capitale depositato durante l\'anno: ");
