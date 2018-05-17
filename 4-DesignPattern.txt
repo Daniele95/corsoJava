@@ -126,6 +126,9 @@ questo sarà usato nel metodo per decidere come istanziare l'oggetto
 quindi anche il costruttore dovrà prendere questo parametro
 
 
+NOTA BENE se un metodo di una classe è statico posso chiamarlo senza istanziare la classe
+e senza fare una factory
+
 
 altri:
 
@@ -173,3 +176,154 @@ in modo che il Presentation Layer debba richiamare un unico componente, la facci
 
 sto solo raggruppando tutti i componenti di business in un solo.
 
+
+
+
+
+COMPONENTI BUSINESS ARCHITETTURALI
+
+DAO
+gestisce il data layer
+
+MODEL VIEW CONTROLLER
+o MVC (gestisce il PC e il BL, componenti essenziali dell'applicazione (il data layer può anche non esserci)
+
+design pattern, che si trova dove si ha un'interfaccia grafica e componenti business che gestiscono la logica
+
+cos'è la VISTA? non va confusa col presentation layer
+
+tutto ciò che l'utente VEDE è presentation layer 
+
+non tutti i componenti del PL sono delle viste. la VISTA (VIEW) è
+un componente che contiene un'intercettatore (detto listener) di eventi in grado di catturare dei dati da processare nella business logic
+
+quindi la VISTA sono le componenti che effettivamente interagiscono con l'utente
+
+è fondamentale che una vista abbia un listener, altrimenti non è una vista
+
+il controller è listener vero e proprio, che viene posizionato all'interno del presentation layer
+
+il modello è il controllore che passa dati dalla pagina web e li passa alle classi di business logic
+
+-----------------------------------------------------
+
+esempio di logica del pattern MVC
+
+JButton bottone = new JButton ();    ->    view
+
+la vista per funzionare ha bisogno di un controllore
+c'è sempre un metodo che lo aggiunge:
+
+bottone.addActionListener(new GestioneEvento())		//aggiungo il controllore
+
+tale metodo è necessario che riceva come argomento l'istanza di una classe
+che implementa un interfaccia di gestione dell'evento specifico di un componente
+(ogni componente vista ha una interfaccia che contiene tutti i metodi per gestire gli eventi possibili)
+--------------
+detto in altre parole
+
+public class GestioneEvento implements ActionListener {
+		//(ActionListener è l'interfaccia di gestione dell'evento sul bottone)
+		//come interfaccia ha dentro dei prototipi da implementare
+	public void actionPerformed( ActionEvent event ) {
+		[ 
+		  azioni da fare nel momento in cui viene premuto il bottone 
+		  questa parte detta MODELLO
+		  ossia dati elaborati dal metodo di business richiamato dal controllore chiamato nella riga precedente
+		  bottone.addActionListener(new GestioneEvento())
+		]
+	}
+}
+
+
+UN ALTRO ESEMPIO
+
+
+creo una finestra Java, detta JFrame
+
+JFrame frame = new JFrame();  		//  finora c'è il PC ma non la view (non "ascolta" gli eventi, cioè l'input)
+
+frame.addWindowListener(new gestioneEvento());
+...
+public class GestioneEvento implements WindowListener {
+	...
+}
+
+
+NOTA BENE anche il concetto di 'classe interna' vs. 'classe interna anonima'
+classe interna: viene definita all'interno di un'altra
+
+public class C {
+	private int i;
+	private int x;
+
+	private Class A {
+		// con private nascondo completamente questa classe A
+		// se A viene utilizzato solo ed esclusivamente da C
+		A a = new A();
+		a.metodo();
+	}
+}
+
+
+potrei quindi fare ad es
+
+private class Gestione Evento Implements ActionListener{}
+
+all'interno della classe bottone
+
+alcune funzionalità possono essere richiamate da più componenti Listener
+
+ma se un bottone usa un SOLO listener, posso usare una classe interna anonima
+
+l'esempio del bottone di prima diventa
+
+
+JButton bottone = new JButton ();    ->    view
+
+bottone.addActionListener( new ActionListener() {
+	public void actionPerformed( ActionEvent event ) {
+		...
+	});
+new ActionListener() {} NON è l'istanza di un'interfaccia (che non si può istanziare!!) ma l'istanza di una
+nuova classe INTERNA ANONIMA che realizza quell'interfaccia
+(interna poiché è interna, anonima poiché non creiamo l'istanza della classe ma usiamo solo il suo metodo)
+
+è esattamente ciò che faccio quando faccio
+
+System.out.println(new Date());
+
+ho insomma DEFINITO UNA CLASSE ALL'INTERNO DI UN METODO 
+(istanza anonima di classe)
+
+
+
+se invece il bottone ha VARI eventi da implementare,
+
+supponiamo però che io voglio sovrascrivere solo UNO degli eventi, gli altri li lascio non implementati
+in realtà questa non è buona programmazione, perché mi lascia dei metodi che posso usare che non fanno niente
+-> altro design pattern:
+
+
+ADAPTER
+adattatore tra l'interfaccia, e la classe che deve utilizzare tale interfaccia
+per evitare che una classe deva sovrascrivere tutti i numerosi metodi dell'interfaccia
+si crea un adapter che li implementa tutti rendendoli reali
+(NON implementati, ma resi reali cioè gli tolgo l'abstract e gli metto le graffe)
+la classe estenderà questo adapter
+
+Interfaccia -> 7 prototipi
+Adapter -> 7 reali (NON implementati)
+Classe -> extends Adapter -> prendo solo i metodi che voglio, tipo 5
+
+L'adattatore non deve essere istanziato!! perché ha metodi non implementati
+per questo l'adattatore è sempre definito come abstract.
+
+L'adapter è molto usato nell'API di Java, ad es. esiste già per il WindowListener
+per il quale esiste un WindowAdapter, classe astratta che implementa l'interfaccia WindowListener
+sovrascrive gli elementi dell'interfaccia, non li implementa ma li fa diventare reali
+
+quindi posso fare 
+
+public class GestioneEvento extends WindowAdapter {}
+(invece che implements WindowListener)

@@ -8,6 +8,8 @@ I COSTRUTTORI
 
 LO STATIC
 
+se un METODO è statico, posso chiamarlo senza istanziare la classe (quindi senza fare una factory)
+
 una classe non può essere statica
 
 
