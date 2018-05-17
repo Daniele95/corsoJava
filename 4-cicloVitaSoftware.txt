@@ -1,1 +1,100 @@
 CICLO DI VITA DEL SOFTWARE
+
+la programmazione è solo una piccola parte della vita del software:
+
+PLAN	ANALYZE	DESIGN	BUILD	TEST	DEPLOY
+
+PLAN: un po scontata, fatta cal capo progetto assieme al manager di progetto
+scrivono documento di alto livello "high level technical design"
+documento di word che descrive in maniera dettagliata tutto ciò che il cliente ha richiesto
+(insomma si mettono giù i requisiti business del progetto)
+
+ANALYZE: è dall'analisi che inizia la parte tecnica del progetto
+non viene fatta dagli sviluppatori ma dagli analisti, analisti funzionali o analisti programmatori 
+(questi ultimi si occupano anche dello sviluppo, hanno grande esperienza, almeno 5 anni)
+analisti funzionali progettano l'architettura e l'infrastruttura del progetto.
+pensano veramente a tutto: in opportuni documenti scrivono:
+OS su cui girerà, tipo di DB in base a richieste cliente, se è app web, quali framework Web utilizzare, ecc.
+ma non solo: pensano al
+diagramma UseCase dell'applicazione, diagramma di sequenza (con la sequenza di operazioni che devono essere eseguite sul progetto),
+descrizione dettagliata di tutte le componenti da inserire nel progetto, si pensa al tipo di framework da utilizzare per fare il testing,
+l'unica cosa che non viene fatta in questa fase è la scrittura del codice
+	
+	USECASE
+	Il diagramma UseCase è di questo tipo: parte con un omino 'actor' che fa partire una serie di operazioni
+	ad es. un manager, gestisce impiegati, progetti, skill
+	ciascuno di questi tre poi va a insert, update, delete
+	lo UseCase è un diagramma UML standard che descrive a grandi linee (ad alto livello) come deve essere fatta l'applicazione
+	non descrive mai esplicitamente come devono essere fatte le cose
+	capita spesso anche di vedere l'inclusione o l'esclusione, o l'extends (concetto simile all'estensione delle classi)
+	ad esempio, ordine può estendere ordine urgente
+	capita poi di vedere un attore che estende per ereditarietà un altro attore (sono legati in quel caso dalla freccettina dell'ereditarietà)
+
+	DIAGRAMMA DI SEQUENZA
+	ce n'è uno per ogni sequenza di operazioni da inserire nel progetto, mostra la sequenza di operazioni NELL'ARCO DI TEMPO
+	diagramma con quadratini con doppie freccine (la linea delineata dalle freccine rappresenta la timeline)
+	ad es. MANATER compila un FORM, che veine mandato alla BC, che crea dei dati con il DAO, che si connette al DATABASE attivandolo
+ 	viceversa il DATABASE viene chiuso dal DAO, che manda i dati al BC, il BC fa report tramite il FORM, letto dal MANAGER
+	queste freccine indicano il TIPO DI TRASFERIMENTO DI CONTROLLO
+	semplice: si procede indipendentemente dalla risposta o meno
+	sincrono(freccina a triangolo vuoto): il componente successivo deve attendere una risposta prima di procedere con l'elaborazione
+	asincrono (freccina tagliata): non deve attendere una risposta, deve comunque andare avanti
+
+	DIAGRAMMA DELLE CLASSI
+	mostra le classi
+
+DESIGN: si crea il diagramma UML delle classi, con freccine che dipendono dal tipo di rapporto: 
+aggregazione, composizione, dipendenza, associazione, ereditarietà, realizzazione, specializzazione, generalizzazione,...
+a seconda di ciò che il capoprogetto decide di usare, vizio, starUML, visualparadigm,...
+alla fine dell'attività di design ha luogo la
+PREPARAZIONE DELL'ASSEMBLY TEST:si mettono assieme i disegni fatti dai vari team, e si crea un'unico diagramma complessivo del progetto
+
+
+BUILD
+BUILD (Preparazione) DEL COMPONENT TEST
+è la cosa più difficile da fare: preparati documenti che descrivono tutte le casistiche di eccezione
+che possono capitare eseguendo un determinato metodo
+ad esempio per un accesso a DB, potrebbe arrivare una chiave duplicata del DB, o un valore troppo grande per il campo del database,
+o ancora un valore nullo per un campo che invece è richiesto, o se un DB registra corsisti e corsi un numero di persone frequentanti maggiore
+delle dimensioni dell'aula
+devo scrivere anche tutti i dati necessari per provare le casistiche di eccezione
+scritto di solito in excel, si mettono i casi di eccezione in una tabella, i dati di test in un altra tabella
+
+BUILD EFFETTIVO DEI COMPONENTI
+si creano fisicamente i componenti del progetto! classi, interfacce,...
+
+ESECUZIONE DEL COMPONENT TEST. 
+dopo aver fatto ciò, si scrivono le CLASSI JUnit DI TEST. è più il codice che si scrive in queste classi, che nelle classi vere e proprie
+JUnit è framework usato per il testing. una classe JUnit di test permette di controllare ogni singolo componente tramite degli assert
+nell'esecuzione del component test tutti i componenti da testare devono essere scritti in JUnit.
+a ciascuna classe corrisponde un test JUnit
+Fare del testing è diverso dal debugging. Nel progetto gli errori (tipo cicli infiniti) non ci devono essere.
+testing è ancora di più: l'applicazione deve rispondere esattamente ai requisiti funzionali richiesti dal cliente.
+
+
+TEST
+questa è la fase di testing vera e propria. prima parte:
+ESECUZIONE DELL'ASSEMBLY TEST, ovvia da fare ma è da fare: se le componenti sono state testate separatamente
+devono essere testate anche tutte assieme. Non è banale, poiché se le singole componenti non sono scritte in maniera impeccabile
+è probabile che il totale dia moltissimi errori
+PRODUCT TEST o SYSTEM TEST: è l'esecuzione del test JUnit a cascata su tutte le componenti del progetto
+ripropongo la sequenza di operazioni progettata nel diagramma di sequenza per ottenere un determinato risultato
+PERFORMANT TEST: controlla che l'applicazione oltre a fare tutto in modo corretto, lo faccia in modo performante
+fatto con tool dell'IBM che sottopone l'applicazione a sforzo, ne misura il tempo di caricamento, controlla il rendimento...
+se ad esempio per fare un'operazione semplice ci metto tanto, ad es. un minuto per inserire una cosa nel database
+o comunque se l'applicazione non risponde in maniera prestazionale è il caso peggiore
+bisogna tornare alla fase dell'analisi!! rifare tutto da zero (infatti quando escono app poco prestazionali, tipo windows vista,
+bisogna in generale riscrivere tutta l'architettura, quindi solo alla versione dopo
+il problema è risolto, analogamente windows 9, si è fatto solo UAT e si è considerato come beta del 10)
+
+UAT (accettabilità da parte dell'utente): si fa provare l'applicazione a un utente per vedere come ci interagisce
+in realtà non è necessario nel caso in cui il cliente abbia richiesto certe features, in quel caso l'applicazione deve soddisfare
+esattamente quelle
+
+
+DEPLOY. fase finale: potare l'app dal cliente, metterla sul web (con server) se necessario, anche a questa fase, quando l'app
+è andata in produzione, escono altri errori in seguito al grande uso, si entra quindi nella fase di MANUTENZIONE
+(quindi in fondo non è malissimo se c'è qualche errore, c'è la possibilità di continuare a lavorare per i clienti come manutenzione,
+il capo progetto può proporre soluzioni migliori; altrimenti il progetto finisce e si viene spostati).
+
+Scadenze: in alcuni progetti erano massacranti, in altri progetti invece molto più rilassanti. Dipende molto dal progetto. Ci vuole un po' di fortuna.
