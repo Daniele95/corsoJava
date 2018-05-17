@@ -8,6 +8,7 @@ I COSTRUTTORI
 
 LO STATIC
 
+una classe non può essere statica
 
 
 modificatore static (per attributi o metodi):

@@ -4,7 +4,6 @@ public abstract class Persona {
 
 	private String nome;
 	private String cognome;
-	
 	public Persona(String nome, String cognome) {
 		// è come se ci fosse qui il costruttore vuoto
 		// super();

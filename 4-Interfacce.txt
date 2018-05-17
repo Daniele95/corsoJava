@@ -1,0 +1,111 @@
+INTERFACCE
+
+non c'entra niente con il concetto di classe
+
+è una struttura che raggruppa un insieme di prototipi e un insieme di costanti
+
+dove le costanti possono essere usate nelle classi che implementano l'interfaccia, e i prototipi devono essere implementati in tali classi
+
+-> i metodi astratti (prototipi) devono esserci (non solo possono esserci come nelle classi astratte)
+
+dal Java 8 le interfacce possono avere un metodo Default implementato, che può essere esteso nelle classi che la usano
+
+Con l'interfaccia NON si possono applicare i concetti di EREDITARIETA'
+
+con l'interfaccia obbligo la classe che la implementa ad implementare i metodi!! (ad avere una struttura mutuata dall'interfaccia)
+
+si dice inoltre che
+
+L'INTERFACCIA SIMULA L'EREDITARIETA' MULTIPLA
+
+in C++ si può scrivere ad es. subclass extends class, class2, class3 ...
+
+In Java non c'è ereditarietà multipla (anche in C++ usata poco)
+
+anche se implementare un interfaccia non è una forma di ereditarietà
+
+ma posso implementare quante interfacce voglio in una classe!! rispetto alla classe astratta
+
+- se uso la CLASSE ASTRATTA, voglio usare sia ereditarietà sia implementazione di prototipi astratti
+	(classe astratta la vedo come mix di classe e interfaccia, ma ne posso ereditare solo una)
+	uso 'extends' = ereditarietà
+
+- INTERFACCIA -> possibilità di implementarne molte, ma no ereditarietà
+	uso 'implements' = REALIZZAZIONE (la classe realizza metodi astratti definiti come prototipi)
+
+ad es. se in una classe astratta vedo che sto inserendo solo prototipi non sto usando i concetti di ereditarietà,
+allora mi conviene utilizzare un'interfaccia!
+
+esempio
+
+public interface NomeInterfaccia {
+
+	// è sottinteso 'public static final' davanti
+	// insomma tutte le variabili sono considerate pubbliche e statiche (costanti)
+	String NOME_COSTANTE = "valore";
+
+	// esempio di costante che scrivo in un interfaccia
+	// per non doverla scrivere tutte le volte
+	// è l'indirizzo di un database
+	//String JDBC_URL = "jdbc:oracle:thin@127.0.0.1:1521:ORCL"
+	
+	// ecco un prototipo, che non è definito 'abstract'
+	// ma sono tutti automaticamente 'public abstract'
+	double metodo();
+
+	// dalla versione 1.8, metodo default può essere implementato
+	default String getDescrizione() {
+		return "ciao";
+	}
+
+}
+
+la implemento:
+
+public class NomeClasse implements NomeInterfaccia {
+	
+	// posso usare ovunque NOME_COSTANTE, nei metodi, nel costruttore, dove voglio
+
+	// devo implementare per forza il prototipo astratto
+	// a meno che questa classe sia una classe astratta!! in questo caso non sono obbligato a implementarlo
+	public double metodo() {}
+
+	getDescrizione() ...
+
+}
+
+in generale
+
+public class NomeClasse extends classe2 implements NomeInterfaccia, NomeInterfaccia1, NomeInterfaccia2, ... {}
+
+
+ESTENSIONE DI INTERFACCE
+
+public Interface I1 {
+	double metodo();
+	double metodo1();
+	double metodo2();
+}
+
+public Interface I2 extends I1 {
+	double metodo3();
+	double metodo4();
+	double metodo5();
+}
+
+separo i metodi in varie interfacce, così posso modulare i vari metodi in diverse interfacce
+
+un'interfaccia può estendere solo un'altra interfaccia (ed essere estesa solo da un'altra interfaccia)
+
+public class Esempio implements I2 -> class implementa tutti e 6 i metodi (anche quelli di I1)
+
+se una classe implementa un'interfaccia, un'altra classe che la estende NON IMPLEMENTA AUTOMATICAMENTE L'INTERFACCIA
+
+(devo specificare 'implements' su tutti i membri della gerarchia polimorfica)
+
+
+
+
+
+
+

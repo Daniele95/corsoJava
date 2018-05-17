@@ -1,0 +1,175 @@
+
+DESIGN PATTERN
+
+(occhio alle regole!! sono quelle che costituiscono il design pattern)
+
+sono stili di creazione di classi
+
+
+
+Prima categoria: Design pattern CREAZIONALI (GOF) (danno caratteristiche sulla creazione di oggetti)
+
+categorie:
+
+1. SINGLETON -> MI IMPEDISCE DI CREARE PIU' ISTANZE DI UNA CLASSE
+
+(molto usati anche dal framework di sviluppo Java 'Spring')
+
+Cliente c = new Cliente(...);
+
+spesso si vuole controllare che venga generata una sola istanza di una classe
+
+Esempio
+ abbiamo una connessione
+
+Connection c = DBAccess.getConnection();
+
+il metodo che ho implementato, getConnection(), deve essere richiamato una sola volta nel codice!!! chiamarlo più di una volta creerebbe uno stallo,
+bloccando la lettura e lo stream con il database relazionale
+
+
+Altro Esempio
+
+abbiamo un numero che è generato da una classe
+
+double v = Classe.generaValore();
+
+controllare che venga generata un'istanza della classe alla volta per generare il valore v univocamente??
+
+
+USO I SINGLETON
+
+REGOLA: se voglio implementare un singleton,
+bisogna creare all'interno della classe
+un campo d'istanza che fa riferimento alla classe stessa,
+tale campo dev'essere per forza statico
+questa istanza controlla bene il numero di classi che sono state create
+
+2° REGOLA: bisogna inserire un costruttore privato nella classe
+(quindi non posso fare l'istanza della classe)
+
+3° REGOLA: creare un metodo statico che ritorna come tipologia 
+l'oggetto classe, in genere chiamato getInstance() {}
+(lo userò al posto del 'new' per creare l'istanza)
+
+
+
+
+
+2. PROTOTYPE -> MI PERMETTE DI COPIARE UN OGGETTO
+
+Cliente c1 = new Cliente("Massimo", ...);
+
+posso scrivere 
+
+Cliente copiac1 = c1    ?
+
+c1 è la reference, cioè il nome del puntatore che fa riferimento all'indirizzo di memoria in cui è salvato l'oggetto.
+
+quindi sì, posso scriverlo, ma copiac1 e c1 sono una reference allo stesso oggetto (modificando uno modifico anche l'altro).
+
+Il prototype serve per copiare gli oggetti. è anch'esso un Design Pattern Creazionale
+
+1° una classe può essere copiata se implementa l'interfaccia Cloneable.
+
+2° devo poi sovrascrivere il metodo clone() di Cloneable
+che faccia la copia bit a bit dell'oggetto.
+
+
+
+il clone() di Object è protected, poiché così è impossibile clonare oggetti se non specifico un Override di clone() in quella classe
+( il metodo clone() della super class Object non è visibile in una classe che creo e che estende Object )
+
+infatti se creassi un oggetto x,
+x.clone() mi restituirebbe probabilmente un tipo che non so gestire, a meno di fare un casting (che magari non saprei fare)
+
+NB nel momento eredito posso cambiare il modificatore di accesso di un metodo a uno meno restrittivo
+ma non posso farlo più restrittivo, perché toglierei funzionalità alla classe, che invece deve averne
+tante quante o più rispetto alla super
+
+nello specifico clone() è protected su Object, nella classe ereditaria posso metterlo public, ma non default o private
+
+
+
+FACTORY		molto usato ->  MI PERMETTE DI RICHIAMARE METODI SENZA ISTANZIARE L'OGGETTO
+lo fa anche in automatico Eclipse con Refactor -> Generate Factory
+
+ecco un metodo che prende dati da un impiegato e li scrive in un database relazionale:
+
+public class impiegatoDAO{
+	public void create(Impiegato i) {
+		
+	}
+}
+
+poi implemento come
+
+ImpiegatoDAO iDAO = new ImpiegatoDAO(); // questa riga è inutile
+
+iDAO.create(imp);
+
+
+il factory nasconde l'implementazione della classe istanziata inserendo un metodo create() all'interno della classe di business,
+metodo che genera l'istanza evitando di creare l'oggetto
+
+
+non serve più il reference della classe per poter richiamare i metodi!
+così non devo allocare in memoria degli oggetti che non mi servono a niente.
+mi viene restituita un'istanza anonima dell'elemento che devo utilizzare per fare una chiamata a un metodo
+
+
+
+FACTORY METHOD (variante del factory)
+
+se passo un parametro variabile nel metodo getFactory
+questo sarà usato nel metodo per decidere come istanziare l'oggetto
+quindi anche il costruttore dovrà prendere questo parametro
+
+
+
+altri:
+
+
+LAZY LOADING
+
+INITIALIZAZION
+
+BUILDER
+
+li faremo
+
+
+
+DESIGN PATTERN STRUTTURALI
+
+danno regole su come disporre i componenti dentro un'applicazione
+
+
+FACCIATA -> raggruppo varie classi per poterne chiamare i metodi istanziando una sola classe!!
+
+
+bisogna tener conto dei tre livelli di un'applicazione
+
+
+Presentation Layer (HTML/XHTML, JSP, JSF, JS...)
+
+	(Controller, componente Java che comunica i dati tra PL e BL)
+----------------------------------------------
+Business Logic
+	elabora i dati
+	qui possono esserci veramente tante classi
+	un file XML li deve passare al Controller, ma questo file è tanto più complesso
+	quanti sono i file.
+----------------------------------------------
+	(DAO, livello di DL che riceve i dati e li trasmette al database)
+Data Layer 
+
+
+al posto del file XML creo un componente di mappatura al livello business, detto FACCIATA,
+che fa una chiamata a tutti i componenti business che stanno sotto.
+
+FACCIATA = punto d'ingresso dei dati che arrivano tramite il controller, una specie di imbuto per i dati
+in modo che il Presentation Layer debba richiamare un unico componente, la facciata.
+
+sto solo raggruppando tutti i componenti di business in un solo.
+
