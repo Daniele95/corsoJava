@@ -1,0 +1,279 @@
+COLLECTION
+
+strutture dati che servono a contenere riferimenti ad altri oggetti
+
+è un array, ma la collection non può contenere dati primitivi
+
+(infatti l'array può contenere sia dati primitivi, che riferimenti ad altri oggetti)
+
+altro vantaggio grosso delle collection è la DIMENSIONE DINAMICA
+
+gli array infatti hanno dimensione fissa: può contenere un numero indefinito di elementi
+-> gestione dinamica di grande mole di dati
+
+due unità di grandezza:
+CAPACITA' E DIMENSIONE
+
+(array ha solo la dimensione)
+
+
+DIMENSIONE = numero di elementi che sono stati inseriti
+nell'array, la dimensione può essere 10 ma il numero di elementi inseriti 3
+
+CAPACITA' = allocazione iniziale data alla collection quando la istanziamo
+
+	ArrayList lista = new ArrayList(20);
+
+20 è la capacità, l'allocazione iniziale
+
+comunque non è un problema superare la capacità: se inserisco il 21° elemento, la capacità diventa automaticamente il doppio
+Java in quel caso copia la collection già esistente, ma con la capacità doppia e inserendo in tal modo il 21° elemento.
+bisogna stare attenti a scrivere la capacità giusta per ottimizzare, altrimenti si rischia di avere una capacità più grande
+del necessario, e inoltre costringo il programma a fare la copia della collection ogni volta che rialloco, 
+rallentando l'applicazione. sulle grandi moli di dati ciò è evidente, e fa la differenza.
+
+	ArrayList lista = new ArrayList();
+
+in questo caso lo crea di default con capacità 10
+
+la capacità non si può diminuire, ma solo aumentare, anche in runtime (dopo che ho costruito la collection)
+col metodo 
+
+	lista.ensureCapacity(100);
+
+(se cerco di decrementarla, non farà niente; per esempio se creo una lista lunga 5, comunque me la crea lunga 10)
+
+posso diminuire la capacità solo col metodo 
+
+	lista.trimToSize();
+
+che taglia la lista alla capacità uguale al numero di elementi inseriti nella collection
+
+per sapere il numero di elementi contenuti all'interno della collezione,
+mentre per gli array ho il metodo length, per le collection ho
+
+	lista.size();
+
+Le collection devono sempre essere parametrizzate tramite parametro di tipo:
+
+	ArrayList<Impiegato> lista = new ArrayList<Impiegato>(20);
+
+definisco il tipo che intendo inserire nella collezione
+
+	Impiegato i = lista.get(8);
+
+questo posso farlo solo se la lista è parametrizzata col tipo Impiegato; altrimenti devo castare
+
+	ArrayList lista = new ArrayList(20);
+	Impiegato i = (Impiegato)lista.get(8);
+
+insomma, quando si dichiara una collection, si mette sempre il parametro di tipo. Sempre meglio metterlo.
+
+--------------------------------------------------------------------------------------------
+
+COLLECTION UTILIZZATE SPESSISSIMO:
+
+a monte della gerarchia delle collection c'è l'interfaccia Iterator
+
+fornisce un oggetto di tipo iteratore che serve per aiutare lo scorrimento dei dati all'interno della collezione
+
+sotto c'è l'interfaccia radice delle collezioni vere e proprie, Collection
+Collection extends Iterator, infatti quando una interfaccia deve catturare le caratteristiche di un'altra interfaccia
+la estende
+
+sotto Collection ci sono tre collection: List, Set, Queue (poi ci sono le implementazioni come classi di queste interfacce)
+
+a parte c'è Map, una interfaccia Collection, che non appartiene a questa gerarchia
+
+gerarchia:
+		Iterator				Map
+		Collection
+List		Set		Queue
+
+
+la Lista è ciò che si avvicina di più a un array, ma è dinamico
+
+i Set sono Collection che non prevedono dati duplicati all'interno (li escludono automaticamente)
+
+Queue lavora con la logica FI-FO (first in - first out), cioè ha una tail e una head, i dati sono
+inseriti nella tail e tirati fuori dalla head.
+
+
+La Mappa invece ha DUE parametri di tipo, la chiave e il valore associato alla chiave
+la chiave serve per identificare in maniera univoca i valori
+ad es. come chiave ho l'username dell'utente, come valore una collection che contiene i prodotti acquistati,
+tramite un valore univoco posso recuperare un record (insieme di valori a lui associato)
+(un po' come la chiave di un database relazionale): la chiave non può essere duplicata, i valori si.
+
+
+
+----------------------------------------------
+
+LIST
+
+
+classi che implementano l'interfaccia List:
+
+ArrayList
+LinkedList
+Vector -> Stack (cioè la pila, logica LI-FO last in first out, inserisco il dato in alto e lo estraggo sempre dall'alto,
+		estende il Vector)
+
+----------------------------------------------
+
+ARRAYLIST (la collection più utilizzata)
+
+è la struttura dati che più si avvicina al classico Array
+
+	public class ArrayList extends AbstractList implements List, RandomAccess, Cloneable, Serializable
+
+cosa serve RANDOMACCESS
+quando si leggono i dati su file o in memoria, esistono due tecniche di base:
+- accesso sequenziale: se cerco il valore all'indice 2000, devo scorrere anche tutti gli altri (non molto performante)
+- accesso casuale (random) o diretto: permette di accedere direttamente all'indice dell'elemento che sto cercando
+	ci va tramite una funzione SEEK al puntatore all'elemento interessato
+quindi implementare RandomAccess rende performante ArrayList per quanto riguarda l'accesso ai dati
+
+cosa serve SERIALIZABLE
+quando si scrivono i dati in memoria o su file, esistono due processi:
+- si usa la classe outputstream, che crea un oggetto cui poi accedo con il metodo write:
+
+	output.write(cliente.getNome());
+
+(scrivo singolarmente le proprietà dell'oggetto in memoria o su file)
+altro modo: si crea l'oggetto sul momento, con la clase DataOutputStream. ciò velocizza
+
+	DataOutputStream.write(new Cliente(...));
+
+la serializzazione è la scrittura dell'intero oggetto in maniera diretta, in memoria o su file
+
+tutte le collection, quando salvano oggetti in memoria con indici, non li recuperano ogni volta con get, 
+ma se li scrivono tutti in memoria
+-> più veloce, sia come scrittura (serializzazione), sia come lettura (deserializzazione)
+
+
+
+
+NON SI PUO' FARE
+Non si può modificare la collezione dopo aver costruito l'iteratore!!
+i dati della collezione possono essere modificati successivamente solo mediante l'iteratore.
+se modifico la lista dopo aver creato l'iteratore, ottengo l'eccezione
+
+	ConcurrentModificationException
+
+
+sulle collection si usano i metodi
+
+add(Object)
+contains(Object)
+isEmpty()
+get(i)
+size()
+ensureCapacity(int size)
+trimToSize()
+indexOf(Object), ritorna la prima occorrenza
+lastIndexOf(Object), ritorna l'ultima (la prima scorrendo al contrario)
+remove(Object), rimuove l'oggetto nel vero senso della parola (per reference)
+remove(int i), rimuovo la posizione
+set(int i, Object newObj), inserisco un nuovo oggetto modificando quello alla posizione i
+clear()
+addAll(lista), concatena liste
+
+la lista è una collezione di oggetti: quindi i valori inizializzati sono sempre null
+
+toArray(), converte la lista a un array
+
+----------------------------------------------
+
+LINKEDLIST
+
+	LinkedList extends AbstractSequentialList implements List, Deque, Cloneable, Serializable
+
+AbstractSequentialList: accesso ai dati sequenziale
+
+Deque: una doppia coda: è indifferente se inserisco i dati dalla testa o dalla coda, è lo stesso
+si usa quando non c'è un ordine preciso di inserimento elementi
+ad esempio un parcheggio, in cui l'uscita delle automobili può essere davanti o dietro
+-> può essere usata come array tradizionale, come pila, e come coda (simula il funzionamento di ogni altra struttura dati)
+struttura più complessa (posso fare le operazioni che voglio),
+ma anche la più PESANTE!! utilizzare solo se serve
+
+IMPORTANTISSIMO!!! QUANTO SEGUE NON SI TROVA DA NESSUNA PARTE
+
+su una doppia coda posso fare le operazioni di
+TE = ThrowException, linkedList deriva da lista e quindi ha metodi che fanno il controllo delle eccezioni
+NTE, metodi che derivano da Deque, non ha metodi che controllano eccezioni
+ad es se rimuovo dati dalla lista come doppia coda fino a non avere più dati nella struttura
+e non voglio controllare se ci sono eccezioni, allora uso i metodi di Deque,
+viceversa se voglio avere il controllo delle eccezioni uso i metodi della lista
+(ad esempio potrei ottenere NotAccessibleException)
+sono metodi equivalenti, uno che controlla le eccezioni l'altro no
+
+			Head					Tail
+		TE		NTE			TE		NTE
+insert		addFirst	offerFirst		addLast		offerLast
+remove		removeFirst	pollFirst		removeLast	pollLast
+extract		getFirst	peekFirst		getLast		peekLast
+
+(extract è leggi il valore senza eliminarlo)
+
+--------------------------------------------------------------------------------------------
+
+QUEUE
+
+esiste anche la coda normale o Queue. Queue ha add che è lo stesso di list (ereditano entrambe da Collection)
+
+Queue		Deque
+
+add		addLast		TE
+offer		offerLast	NTE
+remove		removeFirst	TE
+poll		pollFirst	NTE
+element		getFirst	TE		// estrae il primo elemento dalla coda
+peek		peekFirst	NTE
+
+ecco la corrispondenza tra coda e doppia coda: quando aggiungo alla coda, è equivalente ad aggiungere in fondo
+alla doppia coda.
+
+
+--------------------------------------------------------------------------------------------
+
+STACK
+
+(nella pila c'è sempre il controllo delle eccezioni)
+ecco invece il paragone con una pila (stack):
+
+Stack		Deque
+
+push		addFirst
+pop		removeFirst
+peek		peekFirst
+
+
+ad esempio, se avessi creato una doppia cosa ma usassi solo i metodi removeFirst e getFirst, 
+allora mi converrebbe utilizzare la coda
+lo stesso nell'altro caso, per lo stack
+
+--------------------------------------------------------------------------------------------
+
+quando uso un arrayList, posso usare solo un iteratore che avanza
+
+nella LinkedList ho tre iteratori:
+iterator classico
+list iterator (avanti e indietro)	(un po' più pesante, da usare solo se ho la necessità)
+discendingIterator (va all'indietro)
+
+iterator: interfaccia, con funzione che semplifica lo scorrimento
+
+--------------------------------------------------------------------------------------------
+
+rifaccio lo schema delle interfacce:
+
+		Iterator					Map
+		Collection
+List:		Set		Queue
+  \/				  \/
+ArrayList (classi)		Deque (interfaccia)
+LinkedList
+Vector -> Stack
+

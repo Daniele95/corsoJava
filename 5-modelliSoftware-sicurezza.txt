@@ -1,0 +1,86 @@
+MODELLI SVILUPPO SOFTWARE
+
+tutti i modelli di tipo WATERFALL (che abbiamo visto finora) si basano sul concetto di FASE DI CONTENIMENTO:
+non bisogna mai procedere con la fase successiva finché la fase corrente non è terminata.
+se un team è in una certa fase, tutti devono rimanere in quella fase finché non si passa tutti alla fase successiva
+
+
+VMODEL
+
+come una V, che ha 
+progettazione
+analyze 
+design (nella parte sinistra della V)
+
+build nel vertice della V
+
+test
+deploy (nella parte destra della V)
+la parte destra serve per controllare ciò che è stato pianificato nella parte sinistra
+
+caso peggiore: usare il deploy per usare tutto quanto
+
+
+
+modelli di tipo PROGRAMMAZIONE AGILE (vs. WATERFALL)
+saltare la fase di contenimento: ogni team si occupa di occupare la sua fase, e la testa,
+senza aspettare che gli altri team siano pronti: ognuno crea la sua parte di progetto
+e la integra nel progetto finale
+MODELLO PIU' UTILIZZATO, infatti spesso i progetti sono già in piedi, da molti anni spesso,
+su di essi si fanno le migliorative: il team non usa waterfall, ma integra cose quando ce le ha pronte.
+
+modello più usato, lo SCRUM
+team SCRAM completamente diverso dal WATERFALL: quest'ultimo ha figure di riferimento ben precise
+in PROGRAMMAZIONE AGILE tipo SCRUM esiste uno SCRUM MASTER, tipo team leader,
+un team SCRUM è composto comunque da 5-10 persone; c'è la classica figura del
+FULL-STACK DEVELOPER che ha visione totale su Presentation Layer (Front end), Business Logic, e Daya Layer
+(necessaria se deve controllare una qualsiasi parte del progetto)
+più ce ne sono meglio è
+i team SCRUM hanno scadenze molto brevi, tipo settimanali, dette SPRINT
+
+svantaggi? in tempi così ridotti, la documentazione diventa zero, a differenza della programmazione strutturata,
+in cui la documentazione è molto ricca.
+
+pensata per progetti piccoli
+
+
+
+sicurezza web:
+creare query in maniera errata: bisogna scrivere query che non possano essere soggette ad hackeraggio
+ad es.la query
+"Select * from utente where username = " + var;
+e uso una variabile di java per prendere il nome utente dall'input fatto dal form
+
+se uno nella casella di testo dle form scrivesse 
+marco; drop table 
+mi cancellerebbe tabelle del database
+cioè chiunque potrebbe lanciare comandi SQL sul database dal campo di testo
+si fa invece 
+"Select * from utente where username = ?";
+non si compila direttamente il codice SQL, ma si passa attraverso il codice Java
+(prepare statement)
+
+Se invece passiamo una password, se c'è uno con uno sniffer di rete che sta ascoltando ciò che invio,
+se la password viene inviato in chiaro la ruba subito
+-> usare criptaggio dati (ad es col pacchetto java.security)
+
+L'HTTP invia le informazioni in chiaro: quindi conviene settare su pagine web l'HTTPS che garantisce un criptaggio
+(più sicuro)
+
+fare il controllo degli utenti delle pagine tramite if, o controllo variabili di sessione
+(if session, get attribute tipo username)
+se uno usa strumenti tipo CURL(di unix) per passare parametri tramite protocollo HTTP in modalità post, tramite
+il controllo di http può bypassare l'if della pagina
+-> bisogna fare l'autenticazione lato server: controllo lato server molto più sicuro rispetto a controllo fatto nella pagina
+
+Se devo fare un applicazione di tipo bancaria, la validazione dei dati può essere fatta sullo strato
+di presentazione, più performante (lato clinet) piuttosto che di business logic (più pesante, devo 
+interrogare il server, richiesta-risposta, più sicura)
+la validazione lato client, se uno conosce i parametri necessari per fare il login o la registrazione,
+con strumenti tipo CURL o postman può bypassare la registrazione (lato client; lato server è impossibile)
+validazione lato client è fatta quindi sui moduli di registrazione
+mentre sui moduli in cui si effettua una richiesta di report sui dati, o richiesto un login,
+viene fatta una validazione lato server!! più sicura
+
+gli sniffing di rete sono legali, si usano anche all'interno delle aziende, se li usi per entrare
+nei siti delle banche però diventa illegale
