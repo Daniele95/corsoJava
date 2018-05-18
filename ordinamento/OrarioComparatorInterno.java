@@ -3,14 +3,14 @@ package com.gft.esempi.ordinamento;
 // in questa classe implemento un comparatore
 // interno alla classe
 
-public class Orario2 implements Comparable<Orario2> {
+public class OrarioComparatorInterno implements Comparable<OrarioComparatorInterno> {
 	
 	private int ore;
 	private int minuti;
 	private int secondi;
 
 	@Override
-	public int compareTo(Orario2 o) {
+	public int compareTo(OrarioComparatorInterno o) {
 		
 		int compOre = this.getOre() - o.getOre();
 		if(compOre != 0)
@@ -24,7 +24,7 @@ public class Orario2 implements Comparable<Orario2> {
 		return compSec;
 	}
 	
-	public Orario2(int ore, int minuti, int secondi) {
+	public OrarioComparatorInterno(int ore, int minuti, int secondi) {
 		this.ore = ore;
 		this.minuti = minuti;
 		this.secondi = secondi;

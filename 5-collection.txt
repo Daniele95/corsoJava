@@ -274,6 +274,18 @@ rifaccio lo schema delle interfacce:
 List:		Set		Queue
   \/				  \/
 ArrayList (classi)		Deque (interfaccia)
-LinkedList
-Vector -> Stack
+LinkedList			LinkedList (classe)
+Vector -> Stack			PrioritiQueue (classe)
 
+--------------------------------------------------------------------------------------------
+
+
+QUEUE
+
+si può implementare in due modi:
+
+1. Utilizzando la LinkedList implementata come coda
+l'ordine di inserimento dei dati viene mantenuto nella struttura
+
+2. Utilizzando la PriorityQueue
+tramite un comparatore, interno o esterno, determina il criterio (l'ordine) di inserimento nella struttura
