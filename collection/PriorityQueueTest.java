@@ -62,6 +62,8 @@ public class PriorityQueueTest {
 		}
 	}
 
+	// questo comparatore si inizializza come un'istanza anonima di 
+	// una classe che implementa l'interfaccia Comparator
 	public static Comparator<Account> idComparator = new Comparator<Account>() {
 		@Override
 		public int compare(Account o1, Account o2) {

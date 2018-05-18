@@ -273,7 +273,7 @@ rifaccio lo schema delle interfacce:
 		Collection
 List:		Set		Queue
   \/				  \/
-ArrayList (classi)		Deque (interfaccia)
+ArrayList (classi)		DeQueue (interfaccia)
 LinkedList			LinkedList (classe)
 Vector -> Stack			PrioritiQueue (classe)
 
@@ -288,4 +288,6 @@ si può implementare in due modi:
 l'ordine di inserimento dei dati viene mantenuto nella struttura
 
 2. Utilizzando la PriorityQueue
-tramite un comparatore, interno o esterno, determina il criterio (l'ordine) di inserimento nella struttura
+tramite un comparatore, interno o esterno, determina il criterio (l'ordine)di inserimento nella struttura
+
+
