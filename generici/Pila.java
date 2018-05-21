@@ -28,7 +28,7 @@ public class Pila<E> {
 		if( topPila == -1 )
 			throw new RuntimeException( "La pila è vuota. Impossibile eliminare" );
 			// throw fa anche return
-		return elementi[ --topPila ];
+		return elementi[ topPila-- ];
 	}
 	
 }
