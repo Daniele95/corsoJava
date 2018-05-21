@@ -17,7 +17,7 @@ public class PilaTest {
 		
 		testPush( iPila, elementiInt );
 		testPush( dPila, elementiDouble );
-		//testPop( iPila, elementiInt );
+		testPop( iPila, elementiInt );
 		//testPop( dPila, elementiDouble );
 		
 	}

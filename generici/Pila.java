@@ -11,7 +11,7 @@ public class Pila<E> {
 	public Pila( int i ) {
 		// se i è positivo setto i, altrimenti 10
 		dimensione = i > 0 ? i : 10;
-		topPila = -i;
+		topPila = -1;
 		// faccio un casting rapido, per evitare controlli troppo lunghi
 		// e sopprimo il warning
 		elementi = (E[]) new Object[dimensione];
