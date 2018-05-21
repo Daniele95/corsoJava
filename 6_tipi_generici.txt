@@ -1,0 +1,9 @@
+Cos'è un generico??
+
+è un flag segnaposto che rappresenta un oggetto variabile
+
+attenzione: i tipi che devo generalizzare DEVONO ESSERE OGGETTI
+(un tipo generico non può essere un primitivo)
+
+Posso usarlo quando le operazioni che devo fare SONO ANCH'ESSE GENERICHE,
+sono cioè le stesse per tutti i tipi su cui le applico

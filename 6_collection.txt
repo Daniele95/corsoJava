@@ -166,7 +166,10 @@ e viceversa
 collezione completamente a parte: la
 
 
-MAP
+MAP UTILISSIME
+una versione semplificata di un database+
+hybernate (connesioni database) ritorna la mappa dei dati inseriti, e li identifica tramite la chiave univoca della tabella
+(a una chiave sono associati più valori, o campi di database)
 
 
 non deriva da iterator, quindi è a parte rispetto a quella catena di ereditarietà
@@ -176,7 +179,9 @@ implementazioni dell'interfaccia Map:
 HashMap extends AbstractMap implements Map, Cloneable, Serializable
 LinkedHashMap
 TreeMap
-HashTable
+Hashtable
+
+Le regole per queste sono le stesse che per i Set
 
 
 HASHMAP
@@ -195,4 +200,77 @@ put(chiave, valore)
 per recuperarli:
 
 get(chiave)
+
+
+
+
+HASHTABLE
+
+versione ottimizzata delle mappe, che va usata in ambiente distribuito o in ambiente multithread
+
+
+
+
+
+
+
+
+
+NOTA BENE
+
+Gli array possono racchiudere tipi primitivi ma anche oggetti
+
+Le collection, solo gli oggetti
+
+
+
+
+
+SI POSSONO RICHIAMARE SUGLI ALGORITMI
+
+sono tutti metodi STATICI (si possono richiamare senza far riferimento alla classe)
+
+Collections.sort(..)
+Collections.binarySearch( list, valore )
+Collections.frequency(list, Object)
+Collections.reverse()
+Collections.fill(list, valore)		// riempie tutti i valori vuoti con un certo valore
+Collections.max(list, valore)
+Collections.min(list, valore)
+Collections.addAll(list1, list2)
+Collections.shuffle( list )
+Collections.disjoint(list1,list2)	// una booleana che controlla se hanno elementi in comune
+// quest'ultimo può essere usato su collections in generale, gli altri solo su liste
+
+su COLLECTIONS, la classe che rappresenta le collezioni in generale
+
+ad es.
+Collections.sort(..)    (con confronto naturale o definito da me col comparator, infatti collection implementa comparable)
+
+Collections.binarySearch( list, valore )	// è l'algoritmo più performante poiché usa la ricerca binaria degli elementi nella struttura
+
+la RICERCA BINARIA è un algoritmo del C che: fa la ricerca di un valore IN UN ARRAY ORDINATO DI VALORI
+spezza in due il vettore (lista elementi)
+con un controllo maggiore / minore va a controllare in che zona del vettore è (destra o sinistra), si sposta nella zona d'interesse, e ripete il processo.
+
+è molto, molto più veloce che con la ricerca lineare
+
+quindi, NOTA BENE, prima di effettuare la ricerca binaria devo aver ordinato la collezione!!!!!
+
+Collections.sort();
+Collections.binarySearch( list, valore );
+
+è la sequenza corretta
+
+un altro algoritmo:
+
+Collections.shuffle( list )
+
+fa il miscuglio dei dati nella lista . Serve per generare in maniera casuale la posizione dei valori all'interno della collection
+
+(è come fosse un random() sugli elementi della lista)
+
+
+Collections.frequency(list, Object) mi dice quante volte occorre un oggetto
+
 

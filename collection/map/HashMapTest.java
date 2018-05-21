@@ -1,4 +1,4 @@
-package com.gft.esempi.collection;
+package com.gft.esempi.collection.map;
 
 import java.util.HashMap;
 import java.util.Map;

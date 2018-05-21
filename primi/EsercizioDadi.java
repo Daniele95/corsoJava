@@ -1,4 +1,4 @@
-package com.gft.esempi;
+package com.gft.esempi.primi;
 
 public class EsercizioDadi {
 	public static void main( String[] args ) {

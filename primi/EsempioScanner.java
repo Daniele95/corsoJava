@@ -1,4 +1,4 @@
-package com.gft.esempi;
+package com.gft.esempi.primi;
 
 import java.util.Scanner;;
 
