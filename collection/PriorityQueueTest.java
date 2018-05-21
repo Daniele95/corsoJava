@@ -5,6 +5,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 
+
+
 // il criterio di ordinamento di una PriorityCue sarà dato
 // o da un comparatore, o dall'ordinamento naturale
 

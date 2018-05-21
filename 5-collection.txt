@@ -261,7 +261,7 @@ quando uso un arrayList, posso usare solo un iteratore che avanza
 nella LinkedList ho tre iteratori:
 iterator classico
 list iterator (avanti e indietro)	(un po' più pesante, da usare solo se ho la necessità)
-discendingIterator (va all'indietro)
+discendingIterator (va all'indietro)<
 
 iterator: interfaccia, con funzione che semplifica lo scorrimento
 

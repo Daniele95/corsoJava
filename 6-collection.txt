@@ -1,0 +1,198 @@
+LinkedList usata come coda, se non mi interessa l'ordine di inserimento
+Altrimenti utilizzo la PriorityQueue (se voglio assegnare un certo ordine di inserimento definito tramite un Comparator)
+
+
+VECTOR
+
+Vector extends AbstractList 
+implements Serializable, Cloneable, Iterable, Collection<E>, List<E>, RandomAccess
+
+
+funziona esattamente come l'ArrayList
+
+
+
+cos'è un THREAD ?
+
+è un processo avviato dal metodo Main (col main almeno un thread in esecuzione c'è sempre), oppure se ne può creare uno in maniera programmatica
+
+multithreading: più processi attivi contemporaneamente, che vengono eseguiti assieme. Punto di forza di Java è il MultiThreading
+che è molto usato per la programmazione web: client gestiti separatamente: ogni client la il suo thread in esecuzione
+-> Java enterprise Edition li usa in automatico: tutte le componenti (tipo server, ecc.) sono definiti come Thread-Safe
+
+quando un componente non è Thread-Safe bisogna sincronizzarlo
+
+Problemi: la concorrenza
+
+se ho un arrayList, e due thread che lo modificano contemporaneamente, ho un processo di 
+CONCORRENZA (due processi separati che tentano di gestire una struttura dati
+se cercano di accedere alla stessa cella di memoria per fare delle modifiche, il programma andrebbe in stallo)
+
+Soluzione:
+mettere uno dei due thread in Wait, finché l'altro non ha terminato il processo avviato, a questo punto viene riavviato dal Garbage Collector
+
+Se non avessi sincronizzato, il primo avrebbe preso padronanza delle celle di array che doveva modificare,
+il secondo thread avrebbe preso il controllo dopo poco tempo grazie al GarbageCollector, andando a modificare celle di memoria che il primo
+thread non aveva ancora finito di modificare (e se modificano entrambi la stessa ho uno stallo)
+
+
+Vector: come ArrayList MA è thread-safe, quindi può essere usato in Java Enterprise per gestire la concorrenza dei thread
+
+
+altra collection thread-safe è Stack, che estende Vector
+
+ricordo: lo Stack (pila) è LIFO, la coda è FIFO
+
+nella PILA le eccezioni si gestiscono Sempre! (solo nella coda ho i metodi alternativi per gestire / non gestire le eccezioni)
+
+
+
+
+
+SET
+
+a differenza delle altre classi, il SET non contiene elementi duplicati
+
+implementazioni dell'interfaccia Set:
+
+HashSet
+TreeSet
+LinkedHashSet
+EnumSet
+
+
+
+HASHSET -> veloce, ma non ordinato
+
+
+HashSet extend AbstractSet
+implements Set, Cloneable, Serializable
+
+Il Set lavora tramite la "chiave di Hashing", Hashing key (o code).
+L'Hash Code è un valore univoco generato in automatico dal Garbage Collector, associato a una determinata struttura,
+e mi permette di recuperare in maniera univoca il valore inserito nella struttura: il vantaggio nell'utilizzo è nel recupero dei dati, 
+che è sempre prestazionale (mi basta prendere l'Hash, che trovo in un indice ordinato) <- prendo valori numerici dalla struttura,
+non devo elaborare oggetti più complessi tipo stringhe di testo.
+se recupero i dati con chiave di Hashing sicuramente li recupero velocemente. Però l'Hash Code è generato in maniera univoca in automatico, quindi
+non è detto che i dati vengano inseriti nell'ordine con cui li passo all'interno della struttura.
+
+Quindi posso usare l'HashSet a fini prestazionali, ma NON DEVE INTERESSARMI L'ORDINE D'INSERIMENTO DEI DATI
+
+
+METODI DELL'HASHSET:
+
+add(elemento)
+
+clear()
+
+contains(Object)    -> si appoggia all'HashCode per operare nel modo più performante posibile
+
+isEmpty()
+
+size()
+
+remove(Object)    -> non può esistere un remove by indice, poiché sto usando l'HashCode (insieme non ordinato)
+
+iterator()
+
+---------------------------------------------------------------------------
+
+TREESET -> ordina dati in modo naturale o meno
+
+TreeSet extends AbstractSet
+implements NavigableSet, Cloneable, Serializable
+
+
+dati inseriti nella struttura secondo un algoritmo d'inserimento AD ALBERO BINARIO
+
+è uno degli algoritmi classici di inserimento dati in strutture
+
+in C viene implementato tramite ricorsione sui rami dell'albero
+
+in Java tramite questa classe
+
+il TreeSet li metterà in ordine, in maniera naturale o, se necessario, con un comparatore che gli passiamo
+
+
+---------------------------------------------------------------------------
+
+LINKEDHASHSET -> preserva ordine inserimento
+
+LinkedHashSet extends HashSet
+implements Set, Cloneable, Serializable
+
+quando vedo la parola Linked, si tratta di collection pesanti (come la LinkedList)
+
+Il vantaggio rispetto all'HashSet, è che usa la stessa logica di inserimento di HashSet, ma preserva esattamente
+l'ordine di inserimento
+
+---------------------------------------------------------------------------
+
+ENUMSET
+
+EnumSet extends AbstractSet
+implements Set, Cloneable, Serializable
+
+funziona solo con le costanti di enumerazione, lo scopo è di mantenere i valori unici definiti dall'enumeration
+
+
+
+
+
+
+
+Perché si passano gli elementi un Set dentro una Lista?
+
+per poterli ordinare, ed elaborare con i metodi più complessi forniti dalla Lista (quelli del Set sono più primitivi)
+
+Liste e Set sono compatibili tra di loro: al costruttore di un'ArrayList posso passare l'istanza di un set
+
+ArrayList<String lista = new ArrayList<String>(set)
+
+e viceversa
+
+
+
+---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+collezione completamente a parte: la
+
+
+MAP
+
+
+non deriva da iterator, quindi è a parte rispetto a quella catena di ereditarietà
+
+implementazioni dell'interfaccia Map:
+
+HashMap extends AbstractMap implements Map, Cloneable, Serializable
+LinkedHashMap
+TreeMap
+HashTable
+
+
+HASHMAP
+
+
+Il primo elemento è la chiave, il secondo è il valore associato alla chiave (è un oggetto, quindi può essere anche una lista)
+
+HashMap<Integer, Object> mappa = new HashMap<Integer, Object>(30);
+
+// capacità predefinita delle mappe è 16 elementi (+ fattore 0.75 dato dal caricamento della chiave)
+
+Inserimento dati nella mappa: si fa sempre così
+
+put(chiave, valore)
+
+per recuperarli:
+
+get(chiave)
+
