@@ -1,4 +1,4 @@
-package com.gft.esempi.cicli;
+package com.gft.esempi.esercizi;
 
 import java.lang.Math;
 

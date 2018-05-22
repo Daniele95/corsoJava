@@ -281,6 +281,7 @@ ArrayList<Cliente> lista = new ArrayList<Cliente>();
 ArrayList<?> lista = classe.getObject();
 
 questo è un uso del generico per indicare qualsiasi tipo.
+(? quando non so il tipo della collection)
 
 
 
@@ -289,4 +290,5 @@ creo un comparatore con
 
 public class GenericComparator implements Comparator<T>
 
+(E per classi, T per interfacce)
 

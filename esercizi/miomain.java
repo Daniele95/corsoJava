@@ -1,4 +1,4 @@
-package com.gft.esempi.mieiesempi;
+package com.gft.esempi.esercizi;
 
 public class miomain {
 	public static void main(String[] args) {

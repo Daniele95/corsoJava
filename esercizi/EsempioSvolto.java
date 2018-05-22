@@ -1,4 +1,4 @@
-package com.gft.esempi.collection.map;
+package com.gft.esempi.esercizi;
 
 
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 public class EsempioSvolto {
 	
 	public static void main(String[] args) {
-		Map vehicles = new HashMap();
+		Map<String, Integer> vehicles = new HashMap<String, Integer>();
 		
 		// Add some vehicles.
 		vehicles.put("BMW", 5);

@@ -1,4 +1,4 @@
-package com.gft.esempi.collection.map;
+package com.gft.esempi.esercizi;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

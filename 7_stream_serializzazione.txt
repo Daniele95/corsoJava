@@ -1,0 +1,48 @@
+modi per accedere ai file:
+
+
+ACCESSO SEQUENZIALE (mette i dati uno dietro l'altro)
+
+
+ACCESSO DIRETTO o RANDOM: è possibile accedere direttamente all'indice che mi interessa senza doverli scorrere tutti.
+
+per implementarlo devo avere una struttura dati con una chiave (in generale numerica, per comodità, ma non per forza (anche
+alfanumerico): l'importante è che identifichi in modo univoco i dati, come la chiave di un database relazionale)
+
+Questa chiave serve a leggere e scrivere direttamente nell'indice che mi interessa, contenente il dato di testo
+
+questo accesso è più rapido ma più complesso da implementare
+
+devo creare intanto una struttura dati con tutto lo spazio per i dati che voglio inserire, ma completamente vuota
+(costituita da elementi tutti nulli)
+
+0	null
+0	null
+0	null
+0	null
+0	null
+0	null
+0	null
+0	null
+
+posso poi dirgli, vai a una riga che indico, mettigli l'indice (riga 5 -> metto indice 5, e metto il valore)
+
+0	null
+0	null
+0	null
+0	null
+0	null
+5	valore
+0	null
+0	null
+
+l'indice e la chiave non è detto che coincidano, ma è meglio che coincidano
+
+
+
+Nota bene: String è una classe immutabile. Cioè l'oggetto creato da quella classe non è modificabile
+se non ridefinendo completamente quell'oggetto
+
+ad es. se in una String ho scritto citta e voglio scrivere città, posso farlo, col metodo replace(), ma devo ridefinire
+totalmente l'oggetto (la Stringa viene ricreata tutta da zero, in una locazione di memoria completamente diversa)
+in C, invece, vado a modificare solo quella posizione del char*
