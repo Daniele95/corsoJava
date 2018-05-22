@@ -12,6 +12,7 @@ public class Impiegato {
 	// devo creare per forza il costruttore vuoto poiché Java
 	// non lo mette se ce n'è un altro (non vuoto)
 	
+	// COSTRUTTORE VUOTO OBBLIGATORIO PER L'ACCESSO RANDOM!!
 	// NOTA BENE: lo baso sul costruttore con parametri
 	// per creare un Impiegato con valori vuoti (ATTENZIONE: non un impiegato nullo,
 	// cosa che avrei fatto con un costruttore vuoto public Impiegato() {}
@@ -59,8 +60,19 @@ public class Impiegato {
 		return new String( nominativo ).replace( '\0',  ' ' );
 	}
 	
-	public void scriviNominativo(RandomAccessFile file, String nome2) {
-		
+	public void scriviNominativo(RandomAccessFile file, String nominativo) throws IOException {
+		// devo mettere in un buffer i dati dell'array di caratteri
+		// che andranno scritti su file
+		StringBuffer buffer = null;
+		if( nominativo != null )
+			// se ho già il nominativo bufferizzo quello con la sua dimensione precisa
+			buffer = new StringBuffer( nominativo );
+		else
+			// altrimenti
+			// devo già allocare la memoria per la dimensione massima che inserisco
+			buffer = new StringBuffer(20);
+		buffer.setLength( 20 );
+		file.writeChars( buffer.toString() );
 	}
 
 	public int getId() {

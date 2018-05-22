@@ -1,0 +1,73 @@
+quando leggo e scrivo file posso usare due diversi metodi per accedere ai file
+
+1. usare i getter per leggere i dati, e i setter per settarli
+
+impiegato.getId();
+impiegato.getNome();
+
+
+2. altro metodo: scrivere sul file interamente l'oggetto, senza accedere agli attributi tramite getter e setter.
+questo processo è detto
+
+SERIALIZZAZIONE
+- stampa un oggetto totalmente su file
+
+e la lettura è detta deserializzazione
+
+
+quando creo una classe che implementa la Serializable, mi chiede sempre di aggiungere un SerialID,
+che è un identificativo univoco che serve per rintracciare l'oggetto salvato in memoria o su file
+il SerialID sarà necessario per effettuare la deserializzazione
+
+il modificatore 'transient' serve a garantire che un certo campo non venga incluso nel processo di serializzazione
+il campo 'transient' quindi non verrà scritto su file durante la serializzazione
+
+per scrivere l'oggetto su file con serializzazione si usa l'oggetto ObjectOutputStream (ObjectInputStream per la lettura)
+
+
+comando 
+
+file = new ObjectOutputStream( new FileOutputStream( FILE_PATH ) );	
+
+un oggetto, contenitore dello Stream, e in File di Output che viene aperto (l'oggetto si occupa di aprirlo)		
+		
+
+
+
+
+REFLECTION
+
+si parla si reflection quando si analizza il contenuto di una classe al runtime utilizzando il compilatore 
+e gli strumenti di Java
+
+ad es nella connessione al DB
+Il DataBase avrà il suo driver, che è un elenco di classi
+
+Un pacchetto di classi distribuito è una libreria Jar (contiene pacchetti e classi, fornite da sviluppatore di terze parti
+per certe operazioni)
+
+ad es. per una conness. a un DB mi serve un pacchetto Jar come driver, ciascuno ha il suo
+(ad es. mySql ha l'Odbc, standard per tutte le connessioni, e il Jdbc, specifico per le connessioni Java, 
+che si chiama Connector/J -> bisogna scaricare il pacchetto se si vogliono fare query al DB)
+
+
+Per stabilire la connessione, devo operare cosi
+
+DriverManager.getConnection( URL, USERNAME, PASSWORD );
+
+l'URL in generale è fatto così:
+jdbc:oracle:thin:@IP:numeroPortaDB:NomeDB
+ad es.
+jdbc:oracle:thin:@127.0.0.1:1521:SID
+
+infatti il Java non poteva implementare un metodo getConnection che tenesse conto di migliaia di database
+tutti diversi, anche nel modo di accesso
+Per questo è il driver che contiene le specificiche del DataBase, ad es. ojdbc8.jar, e uso la reflection
+per usarlo per accedere al database: lo ispeziono con
+
+Class.forName( "nome" );		// metodo statico, che legge il contenuto del driver
+DriverManager.getConnection( URL, USERNAME, PASSWORD );
+
+La reflection serve per LEGGERE IL CONTENUTO DI UNA CLASSE (costruttore, metodi, ecc.)
+implementandolo al runtime, anche in modo differente,
+sulla base del contenuto della classe che si è letto
