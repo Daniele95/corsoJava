@@ -12,8 +12,12 @@ public class Elemento {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		
+	public boolean equals(Object object) {
+		Elemento e = ( Elemento )object;
+		if( e.getNome().equals( nome ) &&
+			e.getDescrizione().equals( descrizione ) )
+			return true;
+		else return false;
 	}
 
 	public Elemento(String nome, String descrizione) {

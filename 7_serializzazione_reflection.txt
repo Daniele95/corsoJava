@@ -71,3 +71,38 @@ DriverManager.getConnection( URL, USERNAME, PASSWORD );
 La reflection serve per LEGGERE IL CONTENUTO DI UNA CLASSE (costruttore, metodi, ecc.)
 implementandolo al runtime, anche in modo differente,
 sulla base del contenuto della classe che si è letto
+
+
+OFF TOPIC-----------------------------------------------------------------------------
+
+Uso del 'continue' dopo l'if:
+
+se ho un ciclo for:
+for(int i = 0; i < array.length; i++ ) {
+	if( array[i] == 5 )
+		continue;
+	System.out.println( array[i] );
+}
+
+col continue so che il print di 5 non me lo fa, poiché quando succede
+salta e va all'iterazione successiva
+(con un break invece anche non avrebbe stampato, ma avrebbe interrotto il ciclo)
+
+Mettiamo che il ciclo 'for' di sopra fosse interno a uno 'while'.
+Do un'etichetta al blocco while: così il break etichetta mi fa uscire dal for, e anche dallo while
+
+etichetta:
+while(cond) {
+	for(int i = 0; i < array.length; i++ ) {
+		if( array[i] == 5 )
+			break etichetta;
+		System.out.println( array[i] );
+	}
+}
+
+c'è anche l'istruzione 'return' da sola, cioè "esci dal metodo senza fare niente"
+
+if(cond)
+	return
+
+FINE OFF TOPIC-----------------------------------------------------------------------------
