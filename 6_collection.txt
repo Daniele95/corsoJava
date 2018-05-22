@@ -274,3 +274,19 @@ fa il miscuglio dei dati nella lista . Serve per generare in maniera casuale la 
 Collections.frequency(list, Object) mi dice quante volte occorre un oggetto
 
 
+
+
+ArrayList<Cliente> lista = new ArrayList<Cliente>();
+
+ArrayList<?> lista = classe.getObject();
+
+questo è un uso del generico per indicare qualsiasi tipo.
+
+
+
+
+creo un comparatore con
+
+public class GenericComparator implements Comparator<T>
+
+
