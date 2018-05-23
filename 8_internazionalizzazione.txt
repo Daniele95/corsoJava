@@ -1,0 +1,20 @@
+
+
+pagine web dinamiche (cioè anche in codice Java, ad es. la pagina JSP)
+
+il metodo da richiamare è
+
+
+<%
+	Locale locale = request.getLocale
+%>
+
+che fa più o meno lo stesso di getLocale().DEFAULT, cioè RESTITUISCE IL LOCALE DEL CLIENT
+
+
+Localizzazione = catturo le impostazioni locali del client, e in base ad esse visualizzo una pagina diversa
+per diversi locali (pagina italiano se in Italia, inglese se in UK, ecc.)
+
+Geolocalizzazione = completamente diversa, non si fa in Java, ma si fa in Javascript solitamente con l'API di Google
+Richiede che l'utente autorizzi il server a fare la geolocalizzazione. Molto usata nella gestione delle mappe
+anche usata per spiare gli utenti
