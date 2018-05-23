@@ -1,0 +1,140 @@
+come si potrebbe implementare il var del Javascript
+
+collezioni polimorfiche
+
+for(Impiegato i : imp)
+
+Impiegato i = (Dirigente) imp.get(4)
+
+metodo(param) {
+	if(param == ...)
+		ArrayList<Dirigente> d = new ArrayList<Dirigente>();
+	else if(cond)
+		ArrayList<LavoratoriP> p = new ArrayList<LavoratoriP>();
+	......
+
+ArrayList<?> nome = metodo(...);
+
+(se la componente dell'array è un lavoratoreP mi restituisce quello, se è un dirigente il dirigente
+col ? posso ricevere qualsiasi oggetto)
+
+
+
+
+HASHTABLE è sincronizzata, mentre Hashmap si può usare se non è richiesta un'implementazione ThreadSafe
+
+
+
+
+DOMANDE
+
+cos'è la promozione automatica?
+
+float f = 43.2	// 43.2 in realtà è un double, poiché i valori a virgola mobile sono tutti promossi a double
+byte b = 10; 	
+b = b * 10;	// ci vuole una regola per dire che cos'è il 10, quindi che dato è byte * int
+		// convenzionalmente si pone uguale a int (viene promosso a int)
+		// ma a sinistra ho un byte,
+		// quindi devo castare il membro destro a byte se no è sbagliato
+UN NUMERO INTERO è UN INT
+UN NUMERO CON LA VIRGOLA MOBILE è UN FLOAT
+
+la riga corretta è b = (byte) b*10
+oppure 
+byte b2 = 10;
+b = b * b2;	// questo non mi da problemi		
+
+
+cosa serve un modificatore statico?
+
+statico può essere messo davanti agli attributi (campi d'istanza) e ai metodi, NON davanti alla classe
+farlo significa che QUEI ATTRIBUTI / METODI APPARTENGONO ALLA CLASSE E NON AGLI OGGETTI
+- una variabile statica ha lo stesso valore su tutti gli oggetti che istanziano quella classe
+(se la incremento in un oggetto, incrementa anche negli altri)
+- in un metodo statico non posso referenziare 'this' (non posso lavorare sul singolo oggetti)
+- posso chiamare metodi senza far riferimento alla classe
+
+
+differenza tra classe astratta e interfaccia?
+- la classe astratta può avere metodi implementati, l'interfaccia nessuno (a parte il metodo default)
+- posso estendere solo UNA CLASSE ASTRATTA in ogni classe, ma quante interfacce voglio
+- la classe la definisco come astratta per metterci metodi che posso ereditare, e voglio impedire che 
+possa essere istanziata (non gestisce direttamente la logica del progetto);
+l'interfaccia invece mi dà questo, e mi simula l'ereditarietà multipla.
+- l'interfaccia non ha il costruttore, la classe abstract ce l'ha ma non può essere istanziata
+
+
+throws?
+- throw serve per lanciare eccezioni (nuove eccezioni custom)
+- throws serve per RILANCIARE L'ECCEZIONE AL CHIAMANTE: invece che gestirla dentro il metodo,
+viene mandata a chi richiama il metodo
+
+
+costruttore: 
+metodo particolare che restituisce l'istanza dell'oggetto (non è di tipo void, int, ..)
+richiamato con la parola chiave 'new'
+private => incapsulamento delle variabili d'istanza,
+in questo caso il ctor può essere utile per impostare i campi d'istanza
+
+si può fare overloading di costruttori
+
+Il costruttore fa di default la chiamata al costruttore vuoto
+(è come se contenesse super(); anche se non lo vedo)
+
+Il costruttore può richiamare il costruttore della stessa classe con 'this'
+e il costruttore della classe 'padre' con 'super(parametriCostruttore, altriCampiIstanza )'
+(quando faccio, nella classe ereditaria, l'override del costruttore della classe padre)
+
+
+Collection
+Differenza tra LinkedList e ArrayList?
+LinkedList implementa sia la LIFO che la FIFO (diverse strutture dati)
+LinkedList è una delle strutture più pesanti e IMPLEMENTA LA DOPPIA CODA
+quindi può essere usata come qualsiasi struttura: Pila, Array, Coda
+l'ArrayList è quello che si avvicina di più all'array classico, dati inseriti in maniera sequenziale
+come nell'array. Come l'array, potrebbe avere nei buchi all'interno della struttura, tipo se cancello un elemento
+(invece la LinkedList sposta tutti gli elementi), l'ArrayList NON SPOSTA GLI ELEMENTI
+(anche il fatto di spostare i dati rende più pesante la LinkedList)
+
+
+Nell'Override, cosa non può cambiare?
+Nell'Override, metodo con lo stesso nome, I PARAMETRI CHE PRENDE IL METODO DEVONO ESSERE ESATTAMENTE GLI STESSI
+se cambio i parametri, non sto facendo un Override, ma creando un nuovo metodo (con lo stesso nome ma diversi parametri)
+UNA COSA PUò CAMBIARE: IL MODIFICATORE D'ACCESSO, CHE PERò NON DEV'ESSERE PIù RESTRITTIVO (può essere uguale, o più ampio)
+(ricorda che il default, cioè non metterlo, è meno ampio di public)
+
+
+nell'Overloading, invece può cambiare tutto (a parte il nome), in particolare DEVE cambiare il numero o la posizione
+dei parametri passati
+
+
+
+come modifico una data?
+i costruttori del date quasi tutti deprecati, a parte quello che restituisce la data in formato ITC
+date.util() si può usare anche se deprecato, poiché supporta ITC:
+la data va dichiarata con util(), e poi convertita in calendario (noi usiamo GregorianCalendar) 
+per fare le modifiche alla data
+così non devo più fare controlli, grazie al calendario,( ad es. dell'anno bisestile, ecc.), come dovrei fare in C
+GregorianCalendar c = new GregorianCalendar();
+c.setTime(data);
+a questo punto posso fare
+c.get();
+
+
+serializzazione? (molto usata da molte componenti java, tipo le Collections)
+scrivono l'intero oggetto in memoria o su file, senza usare Getter e Setter
+
+final?
+- rende un oggetto costante
+- su metodi blocca l'override del metodo dalle classi ereditarie
+- su classi blocca l'ereditarietà della classe
+
+
+
+
+fasi ciclo di vita del software?
+
+
+
+
+

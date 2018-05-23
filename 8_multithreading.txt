@@ -1,0 +1,70 @@
+il THREAD
+è un processo che viene avviato all'interno dell'applicazione ed esegue processi nell'arco del tempo
+un THREAD corrisponde a un ARCO TEMPORALE durante il quale viene eseguito
+
+in ogni appl. Java, almeno un THREAD c'è sempre (ad esempio il main)
+
+in Java posso avviarne di più contemporaneamente.
+
+
+legato all'avvio dei thread, concetto di SCHEDULAZIONE DEI THREAD, che cambia a seconda del sistema operativo
+il sistema operativo gestisce in automatico la schedulazione.
+il primo thread viene fatto partire.
+dopo un po' viene fatto partire il secondo, per fare ciò il primo è messo in wait.
+il secondo esegue, se ci mette troppo verrà messo in wait e verrà fatto ripartire il primo.
+
+Altrimenti ci sarebbe il rischio di avere celle con dati elaborate contemporaneamente da due thread,
+o prima da un thread e poi dall'altro. CONCORRENZA DEI THREAD, quando due thread vanno a modificare contemporaneamente
+la stessa cosa. -> necessaria la SINCRONIZZAZIONE DEI THREAD
+
+ecco per quando si crea un thread, bisogna dargli una priorità di esecuzione, da 0 a 10.
+più è alta, più è probabile che venga eseguito per primo.
+
+se non gli do la priorità, la predefinita è 5, e in questo caso sarà il sistema operativo a decidere quale far partire.
+
+per gestire i thread posso usare due sistemi diversi:
+
+Thread (classe)
+se estendo Thread è più facile l'implementazione. Però se la mia classe estende Thread non può estenderne altre
+
+Runnable (interfaccia)
+un po' più complesso implementarlo, ma posso estendere anche altre classi
+
+
+modificatore 'synchronized' , serve per gestire la SINCRONIZZAZIONE dei thread, cioè la gestione manuale delle operazioni
+eseguite da ciascun thread (così ad es. posso garantire che un Thread sia messo in wait solo una volta
+completata una certa operazione)
+
+è necessaria solo quando due thread lavorano sullo stesso componente, cioè quando ho concorrenza.
+
+
+anche la classe Object, che estendo sempre, alcuni dei metodi che contiene sono per la gestione dei thread. 
+metodi di Object:
+Object.clone(), che è protetto nella classe Object: protetto poiché così non posso usarlo su una classe,ma prima
+devo creare un prototipo che implementa Cloneable e definisce clone,
+e estendere quello, poi farò un cast all'oggetto che mi serve nel momento in cui uso il clone() (che mi ridà un Object)
+
+Object ha anche finalize(), chiamato dal Garbage Collector per rilasciare l'oggetto dalla memoria quando non serve più.
+nelle ultime versioni il Garbage Collectorlo fa automaticamente quando l'oggetto
+non serve più (è ottimizzato talmente bene). comunque finalize() non è deprecato, può servire anche a me.
+se ad es faccio due liste e le accodo
+ArrayList l1
+ArrayList l2
+Collections.addAll(l1, l2)
+e voglio eliminare l2? GarbageCollector non lo capisce, quindi eseguo il finalize() manualmente per farlo.
+
+Object.getClass() -> per la reflection
+
+Object.hashCode -> per identificare in maniera univoca l'oggetto in base alla chiave di hash
+
+Object. notify() -> avviare un thread che è stato messo in wait
+e notifyAll() -> avvia tutti i thread
+wait() -> mettere in wait un thread in maniera esplicita, indicando magari anche la tempistica
+
+
+nelle applicazioni enterprise non si gestiscono mai manualmente ma ci sono in automatico
+
+nelle applicazioni standard invece di solito ho un thread, devo dirgli se voglio gestirne vari
+
+
+in particolare devo fare Override del metodo run() !!! che mi dice cosa fare
