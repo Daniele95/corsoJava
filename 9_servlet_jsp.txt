@@ -1,0 +1,215 @@
+JSP java service pages
+
+è come una normalissima pagina HTML
+potrei fare anche un index.jsp
+è fatta come una pagina html:
+
+<html>
+<head>
+</head>
+<body>
+<%
+	codice java...
+%>
+</body>
+</html>
+
+può cioè contenere gli scriptlet <% %>
+che conterranno codice dinamico IN JAVA che serviranno per fare la compilazione lato server
+esistono analoghi, tipo l'asp, che compila col server IS, e permette di scrivere in C#, ma la logica è la stessa
+oppure può scrivere in PHP, altro linguaggio che permette di rendere applicazioni dinamiche
+
+
+DIFFERENZE TRA PAGINA JSP E SERVLET
+
+il codice scritto nella JSP è l'equivalente della Servlet: posso catturare dei parametri, 
+elaborarli all'interno della pagina. Allora perché esiste la versione classe (Servlet) e la versione HTML (jsp)?
+
+Ricordiamo i tre layer di un'applicazione web:
+Presentation Layer:    XHML/HTML	JSP	JSF	JS
+Business Logic:		Servlet
+(Data Layer, DAO)
+
+se devo creare una pagina HTML con moltissimi elementi, crearla tramite un Servlet sarebbe lunghissimo
+viceversa se avessi una pagina JSP in cui la parte di Scriptlet Java diventa molto lunga, sarebbe un casino,
+anche perché spesso chi lavora al FrontEnd (html/css) sa poco di logica programmazione Java, quindi è inutile
+che scriva troppo codice Java
+Inoltre, in qualche modo la parte di presentazione dovrà comunicare con la parte di Business Logic!!
+La parte JSP dà la possibilità di interagire con il codice Java della BL, mediante gli Scriptlet Java!!
+E' formalmente sbagliato scrivere codice Java importante nelle JSP, poiché non sto applicando il Design Pattern
+'Business Delegate' (che delega la parte di MiddleWare alla gestione della logica di business),
+così come sarebbe ancora peggio scrivere logica di programmazione nella parte di Data Layer (DAO)
+
+(Si aggiunge poi anche il controller tra Presentation e BL, altrimenti si va conto il Pattern NVC
+questo prevede che ci sia una View (pagina col form), Controller, e Model (le Servlet, o comunque le 
+classi di Java che elaborano i dati; le Servlet hanno rispetto alle classi normali la facoltà in più di intercettare
+le richieste e rispondere)
+Esiste anche una componente detta Filtro, che è una Servlet ma usata come Dispatcher (cioè reindirizzatore di dati
+alle altre componenti). Ecco, il Filtro è un Controller.
+Usare una Servlet con un Dispatcher esplicito la rende automaticamente un Filtro, quindi da Servlet diventa un Controller. 
+
+
+
+
+
+per essere deployate sul server, le applicazioni devono essere nella cartella webapps (sottocartella del server tomcat)
+
+
+esempio index.jsp---------------------------------------------------------------------------------------------------
+
+<!-- direttiva JSP, per importare librerie Java: -->
+<%@page import="java.text.*"%>
+<%@page import="java.util.*"%>
+
+<html>
+<head></head>
+<body>
+<!-- Scriptlet JSP:                              -->
+<%	
+	// richiesta del Locale, che fa riferimento a quello del client
+	Locale locale = request.getLocale();
+	DateFormat format = DateFormat.getDateTimeInstance(
+		DateFormat.LONG,
+		DateFormat.SHORT,
+		locale );
+	// voglio visualizzare nell'HTML la data di oggi visualizzata in italiano!!
+	// due modi. 1: stampo da Scriptlet
+	out.println( "Scriptlet: " + formato.format( new Date() ) );
+%>
+<br>
+<hr>
+<br>
+<!-- Espressione JSP:                            -->
+<%=
+	nome
+%>
+
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------
+	
+la cosa strana è che la 'request' passata in argomento da doGet o doPost
+è un elemento HttpServletRequest
+che sta in javax.servlet
+che non abbiamo importato!!!
+in JSP esistono oggetti impliciti, che senza dichiararli da nessuna parte
+vengono automaticamente forniti dal Web Container
+'out' è un altro oggetto implicito
+
+
+NOTA BENE il Web Container richiama gli oggetti dal PL, li organizza e li passa al JDK per la compilazione
+(si appoggia comunque al JDK)
+
+Ho messo tre elementi: direttiva JSP (per importare), Scriptlet (script Java),
+espressioni JSP (stampare in maniera volante variabili che ritornano sempre una stringa contenente
+la risposta da inviare al Client)
+cioè stampo al volo una variabile che ho dichiarato nello Scriptlet, faccio ciò in un punto qualsiasi dell'HTML
+
+nella JSP non posso invece scrivere codice Java normale, solo stampare variabili
+invece di fare out.println(nome) scrivo semplicemente nome
+
+
+in fondo la pagina JSP è una Servlet, cioè viene compilata dal server all'avvio, anche se serve 
+a formattare la pagina più che altro
+
+
+l'index.jsp lo metto sotto tomcat, in una cartella che creo
+ad esempio \tomcat\webapps\index.jsp
+questo lo compila automaticamente Tomcat all'avvio come progetto
+
+
+la fase di deploy consiste nell'esportare il sito in .war,
+avviare il server (da riga di comando)
+entro nella console di amministrazione di tomcat (devo prima avere un utente per il deploy
+da localhost:8080
+per fare il deploy è uploadare il .war e cliccare deploy: in questo modo il progetto sarà poi disponibile per gli altri client
+
+
+per registrare un utente su tomcat, autorizzato a fare il deploy, vado su  \tomcat\conf
+
+e scrivo
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+	<role rolename="manager-gui"/>
+	<user username="daniele" password="daniele" roles="manager-gui"/>
+</tomcat-users>
+
+esistono ruoli predefiniti in tomcat, il manager è autorizzato a fare il deploy
+
+se modifico l'xml non ci devono essere errori. Un modo per verificarlo è aprire il file xml
+con Chrome, che mi fa la validazione dell'xml.
+
+
+
+
+SESSIONE DELL'APPLICAZIONE:
+ARCO DI TEMPO CHE INIZIA CON L'ACCESSO ALLA PAGINA DELL'APPLICAZIONE, E DURA FINO A ...
+
+ad esempio quando si fa il logout, un metodo detto 'invalidate' cancella tutti i dati di sessione
+e riconosce il client dopo il logout
+
+oppure: la sessione si chiude quando chiudo tutte le istanze aperte del programma (ad es. chrome)
+
+se chiudo e riapro l'applicazione, e ha ancora dei dati basati su di me, è perché ha salvato dei Cookie
+sul mio computer
+In Java c'è una classe Cookie che crea il Cookie necessario per poterci identificare con le prossime
+sessioni di navigazione
+
+poi c'è il timeout di sessione o Expire sessions, cioè quanto tempo può durare al massimo una sessione
+
+
+
+se non modifico xml o classi di Java, posso usare il reload dal pannello tomcat, altrimenti no, devo riavviare il server
+
+
+
+
+ACCEDERE AL DATABASE
+
+andare in configurazione database, tasto destro -> aggiungi driver ->
+ aggiungere il drivere che è stato messo su google drive
+come Oracle Thin Driver 11
+
+
+SID: ORCL
+host di massimo: 182.168.18.117
+catalog: DBA (permette anche di creare oggetti)
+
+
+
+
+
+
+DATABASE RELAZIONALI
+
+
+la CHIAVE è quella che consente di identificare in maniera univoca i record
+chiave primaria è un vincolo (constraint) che serve per rendere il valore del campo unico, per identificare
+in maniera univoca i dati contenuti nella tabella. -> non posso inserire valori duplicati,
+né più valori per chiave.
+
+
+
+BUG documentato di Eclipse:
+quando inserisco dati nel DataBase tramite file SQL in Eclipse, con
+insert into statistica values( 1, 'Rock', 0 );,
+è probabile che l'applicazione che avvio successivamente non li veda, anche se fisicamente sono nel database
+
+
+
+Prendere il driver del database e inserirlo in WebContent\WEB_INF\lib
+
+
+
+URL driver jdbc:
+parteStatica@urlMacchina:porta:NomeDB
+tipo
+jdbc:oracle:thin:@192.168.18.117:1521:ORCL
+lo trovo anche nelle Driver Properties
+
+
+funzioni raggruppamento sql: 
+min, max, sum, count, dev, avg, variance
+
+in SQL non esiste il +=
