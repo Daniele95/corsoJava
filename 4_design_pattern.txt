@@ -118,6 +118,10 @@ così non devo allocare in memoria degli oggetti che non mi servono a niente.
 mi viene restituita un'istanza anonima dell'elemento che devo utilizzare per fare una chiamata a un metodo
 
 
+oppure mi pongo col cursore su un costruttore, vado Source -> introduce Factory
+e lui mi crea un metodo (lo posso chiamare getFactory) che restituisce un oggetto dello stesso tipo
+e rende il costruttore privato
+
 
 FACTORY METHOD (variante del factory)
 

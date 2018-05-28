@@ -1,0 +1,98 @@
+Java Bean (componente Business)
+
+una normalissima classe java, ma:
+
+deve avere il costruttore vuoto
+
+infatti è automaticamente istanziata dal Web Container, che deve sovrascrivere il costruttore mettendo
+quello con parametri
+
+
+Java Bean è usato come STRUMENTO DI MAPPATURA DEL DATABASE RELAZIONALE
+cioè rappresenta la tabella del DB, con tutte le sue colonne,
+e serve per applicare Design Pattern specifici, tipo DAO, o Business Delegate, che usano Java Bean per gestire
+la persistenza dei dati
+
+per usare il Java Bean dentro un progetto, uso:
+
+l'AZIONE JSP
+cioè questo tag
+<jsp:
+in particolare uso l'azione useBean
+<jsp:useBean
+
+direttive vs. azioni
+<% %>  è una direttiva
+
+sono entrambe MESSAGGI che vengono inviati al server (Application Server, o Web Container)
+ per indicare le caratteristiche di una pagina,
+o per includere risorse esterne.
+
+L'azione viene valutata ogni volta che avviene una richiesta.
+Le direttive vengono valutate una sola volta nel ciclo di vita dell'applicazione.
+
+<jsp:useBean id="cliente"
+
+come in html, l'id non può essere duplicato all'interno della pagina, il 'name' invece si 
+(ce ne possono essere vari con diversi valori)
+
+poi associo una classe al Bean (siamo sempre nel livello Business logic)
+
+<jsp:useBean id="cliente" class="com.gft.beans.Cliente" scope="session" type="com.gft.beans.Persona" />
+
+lo scope è la visibilità, può avere vari livelli
+
+application	non si chiude mai durante tutta l'applicazione
+session		all'interno della sessione
+page		all'interno della pagina
+request		nasce e muore quando viene effettuata la richiesta
+
+
+type: indica se il Bean deriva da un determinato supertipo oppure no
+
+questa è una CREAZIONE DI ISTANZA DEL BEAN, definisce il bean e lo istanzia
+
+da quel momento se in una pagina scrivo 
+<%
+	cliente.setNome("daniele");
+%>
+funziona.
+
+posso usare un'altra azione per settare le proprietà
+
+<jsp:setProperty name="cliente" property="nome" value="daniele" />
+( o value="<%= exp %>" ), cioè uso uin valore variabile
+oppure apro uno scriptlet e uso i setter
+<%
+	cliente.setNome("<%= nome %>");
+%>
+
+potrei anche fare così:
+	legge proprietà da un Bean (name="nomeBean")
+<jsp:setProperty name="cliente" property="*" />
+
+cioè "settami tutte le proprietà del cliente LEGGENDOMI IN AUTOMATICO TUTTI I DATI CHE ARRIVANO NELLA RICHIESTA
+
+in questo caso bisogna fare attenzione a che: I CAMPI DEFINITI DENTRO NEL FORM DEVONO COINCIDERE
+OBBLIGATORIAMENTE COME NOME CON I CAMPI D'ISTANZA DELLA CLASSE
+
+se però uso le date (catturandole nel form), bisogna settarle una una a mano (devo convertire la data
+facendo il parse corretto)
+
+<jsp=getProperty name="cliente" property="nome" />
+legge direttamente le proprietà dal bean, ciò non è esattamente lo stesso che
+<%
+	cliente.getNome();
+%>
+poiché il getProperty, oltre a fare il get, fa anche una chiamata in cui stampa una risposta al client
+l'equivalente vero e proprio sarebbe dunque
+<%
+	out.print(cliente.getNome());
+%>
+
+
+
+OFF TOPIC:
+modificare 
+tasto destro su un progetto -> properties -> java build path -> libraries -> edit JRE system library ->
+verifichi che sia alternate jre e che ci sia la tua

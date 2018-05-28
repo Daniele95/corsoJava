@@ -173,7 +173,7 @@ come Oracle Thin Driver 11
 
 
 SID: ORCL
-host di massimo: 182.168.18.117
+host di massimo: 192.168.18.117
 catalog: DBA (permette anche di creare oggetti)
 
 
