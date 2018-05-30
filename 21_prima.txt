@@ -1,0 +1,58 @@
+
+indirizzo Lucio Benfante:
+
+192.168.18.114:4100
+
+
+
+consigli:
+
+
+usare il return solo alla fine della funzione,
+
+ciò aiuta la manutenzione dei metodi
+
+String è inmutabile (final), non posso invertirla!!
+uso StringBuilder, una stringa che posso modificare, ad esempio col metodo reverse()
+
+
+
+errore html 405: METHOD NOT SUPPORTED
+supporta la richiesta in get, non in post (ad es. nel caso in cui il server fornisce solo elementi statici)
+
+ecco la UI del server swagger
+
+http://localhost:8081/swagger-ui.html#!/echo-controller
+
+(avviarlo dal progetto EchoController di Lucio Benfante, basta avviare la .jar nella sottocartella 'target')
+
+
+
+metodo classico per ottimizzare calcoli: calcolare i primi valori (ad es. della sequenza di fibonacci)
+che vengono usati spesso nel'iterazione
+o magari mi salvo un array con tutti i numeri precedentemente calcolati
+
+
+meglio usare printf, poiché ho sostituzione di stringhe in un template di stringa predefinito,
+piuttosto che concatenazioni di stringhe, meno efficienti e più difficili da controllare
+
+
+
+COME RISOLVERE IL PROBLEMA DELLA MANUTENZIONE
+
+se io scrivo un codice, poi cambia il programmatore e se arriva ha paura di toccare il codice per non sminchiare tutto
+
+SOLUZIONE: (implementarla spesso incontra resistenza): TEST AUTOMATICI
+scrivo altro codice che prova il mio codice
+
+i test sono chiamati Unit Test (test unitari), provano singoli pezzi della nostra applicazione
+
+vanno usati SEMPRE
+
+ogni volta che modifico il sorgente e faccio una build (riproduco l'eseguibile), io eseguo
+TUTTI I TEST che sono stati previsti per quell'applicazione.
+se ho sbagliato qualcosa, sicuramente un test fallirà. In questo caso ho meno paura di fare una modifica (più tranquillità)
+i test mi dicono anche COME L'APPLICAZIONE S'INTENDE ESSERE USATA
+
+si usa comunemente la libreria jUnit
+e il comando Assert

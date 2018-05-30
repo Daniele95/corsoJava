@@ -1,37 +1,35 @@
 package com.gft.esempi.esercizi;
 
 import java.util.Scanner;
-import java.lang.Math.*;
+import static java.lang.Math.*;
 
 public class Albero {
 
-	public static void stampaRombo( int jMax ) {
+	public void stampaRombo( int jMax ) {
 		
 		for( int j = jMax-1; j >= -jMax+1; j-- ) {
 			
-			int iMax = jMax - Math.abs( j );
-			if (Math.abs( j ) > 10) System.out.print("           ");
+			int iMax = jMax - abs( j );
 			
-			// stampo gli spazi opportuni
-			for ( int k = 0; k < Math.abs( j ); k++) {
-				if (Math.abs( j ) > 10) System.out.print("  ");
-				else System.out.print("   ");
-			}
+			// stampo gli spazi opportuni a inizio riga
+			for ( int k = 0; k < abs( j ); k++)
+				if ( abs( j ) < 10) System.out.print("  ");
 			//
 			
+			// stampo la j-esima riga e vado a capo
 			if ( iMax == 1 ) System.out.print( iMax );
 			else {
 				for( int i = iMax; i >= - iMax; i-- ) {					
 					if( i == 0 ) i-= 2;
-					System.out.print( Math.abs(i) + " ");					
+					System.out.print( abs(i) + " ");					
 				}
 			}			
-			System.out.println();		
-		}	
+			System.out.println();
+			//
+		}
 		
 	}
-	
-	
+		
 	
 	
 	public static void main(String[] args) {
@@ -39,10 +37,11 @@ public class Albero {
 		
 		System.out.print("Inserisci numero massimo: ");
 		String s = in.nextLine();
+		Albero rombo = new Albero();
 		
 		try {
 			int jMax = Integer.parseInt(s);
-			stampaRombo( jMax );		
+			rombo.stampaRombo( jMax );		
 			
 		} catch( Exception e ) {
 			System.out.println( "Input errato. Inserisci un numero!" );
