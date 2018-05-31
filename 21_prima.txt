@@ -56,3 +56,201 @@ i test mi dicono anche COME L'APPLICAZIONE S'INTENDE ESSERE USATA
 
 si usa comunemente la libreria jUnit
 e il comando Assert
+
+TDD = TEST DRIVEN DEVELOPMENT -> indica una metodologia rigorosa: prima si scrivono i test,
+poi si scrive il codice da testare.
+
+anche per la segnalazione di bug: scrivo un test che dimostra che il codice non funziona come ci si aspetta,
+il test fallisce. Il mio lavoro diventa far funzionare quel test, a quel punto ho un test in più.
+
+fondamentali, altrimenti un'applicazione finisce subito fuori controllo e nessuno si azzarderà più a metterci le mani
+
+
+in generale NON SI USA UN'IDE PER ORGANIZZARE UN PROGETTO
+
+si usa una libreria il cui contenuto non è solo quella delle servlet, jsp, ma 
+SpringBoot, che deriva da Spring, si usa per gestire server
+risolve un problema molto difficile:
+INTEGRARE CLASSI CHE PROVENGONO DA PARTI DIVERSE
+infatti spesso non vogliamo creare classi per funzioni specifiche, ma generiche, ad es.
+usiamo le interfacce, di cui non sappiamo la funzione, ma saranno poi implementate
+
+spring risolve il problema di collegare gli oggetti, e dire chi deve implementare cosa
+l'interfaccia definisce i metodi,
+ma la classe che la implementa, solo essa sa esattamente come viene implementato il metodo
+
+ad es. se devo testare una classe che si connette al database,
+con Spring non creo un oggetto che legge il database, ma un oggetto che crea utenti fittizi
+(li configuro io) e li uso per testare la classe che ho scritto!!
+
+ad es.  quando trovo un NEW vuol dire che quella parte di codice è inmutabile!!
+non posso sottoporla a test. per questo spesso non si fanno.
+
+fare i test non è difficile ma richiede tecnica, è molto importante!!
+
+si può anche usare maven, sistema di project management
+maven è scritto tutto in Java
+
+EchoService di Lucio Benfante è costruito con Maven
+
+importa dipendenze (indicate nel file pom.xml nella root directory del progetto)
+ad esempio junit, viene importato tra le dipendenze
+
+QUESTO PERMETTE DI ORGANIZZARE IL PROGETTO A PRESCINDERE DALL'IDE! (ad es. noi con eclipse 
+ce l'abbiamo automaticamente, ma magari un altro no!!)
+
+Maven ha anche un Tomcat integrato, uno Swagger, ecc.
+
+
+se cancello il Target, posso comunque ricompilare il progetto
+
+col comando, da terminale,
+mvn clean install
+
+ciò si può fare anche da Eclipse.
+
+
+per importare il progetto in eclipde,
+file -> import -> existing maven project
+e seleziono la cartella echoservice
+
+faccio poi destro sul progetto -> maven build... -> come Goal indico 'clean install'
+
+
+e mi autoimporta tutte le dipendenze
+
+
+possibile errore: No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+quando eclipse si installa si porta dietro il suo JRE.
+
+bisogna aggiungere tra le JRE una JDK (manca il compilatore JDK)
+
+
+
+Distinguish this from Development Environments and Build Environments.
+
+You will tend to find a hierarchy here.
+
+Run time environment - Everything you need to execute a program, but no tools to change it.
+
+Build environment- Given some code written by someone, everything you need to compile it
+or otherwise prepare an executable that you put into a Run time environment.
+ Build environments are pretty useless unless you can see tests what you have built,
+ so they often include Run too. In Build you can't actually modify the code.
+
+Development environment - Everything you need to write code, build it and test it. 
+Code Editors and other such tools. Typically also includes Build and Run.
+
+
+Java viene dato in
+JDK (tutti i tool di sviluppo: compilatore per virtual machine, profiler, tracer,...)
+JRE (virtual machine, ecc., tutto ciò che permette di eseguire il codice Java)
+
+a volte viene erroneamente usato come ambiente di sviluppo il JRE invece che il JDK. Va bene finché usiamo il compilatore
+di Eclipse, ma se abbiamo bisogno di un altro metodo per compilareeb)
+ci serve un compilatore (spesso necessario nello sviluppo web, infatti le jsp sono poi classi che vengono compilate).
+
+
+in seguito faccio run as -> maven build... -> goal metto 'spring-boot:run'
+
+ora posso andare su 
+
+http://localhost:8081/swagger-ui.html
+(swagger è una piccola interfaccia installata col progetto)
+
+per avviare il server posso anche fare destro -> run as sulla classe 
+
+
+
+EchoServiceApplication.java
+
+la classe SimpleCorsFilter non è mai istanziata da un'altra classe, ma comunque
+recuperano l'oggetto istanziato da essa mediante Spring (c'è sopra la label @Component)
+quindi se voglio sostituire questa classe con un altra andrò a cambiare la configurazione Spring
+
+questo aggiunge un livello di indipendenza per le classi
+
+le classi usate in EchoController derivano tutte da Servlet jsp
+
+ma poi lo Spring framework le usa, ma crea un framework più ricco per lo sviluppo web
+
+ad es. per dire che una classe deve essere usata come servizio, uso l'annotazione
+@RestController
+(invece di dire che eredita da servlet, servletcontroller ecc.)
+
+per la mappatura, invece di andare nel jsp ecc., faccio semplicemente l'annotazione
+@RequestMapping("v1/echo")
+
+
+ora vado sotto src/main e aggiungo una nuova cartella 'webapp'
+
+poi faccio il run del maven project, come goal metto 'package'
+
+
+se modifico il form, basta ricaricare la pagina per vedere le modifiche, non è necessario ricompilare il progetto
+
+
+di solito avviare come Maven Build, e selezionare spring-boot:run
+
+
+se aggiungo in EchoController nei metodi get e post, alla fine,
+
+        if( req.getParameter( "redirect" ) != null ) {
+        	res.sendRedirect( req.getParameter( "redirect" ) );
+        }
+
+aggiungo anche nel form.html
+
+<input type = "hidden" name="redirect" value="/form.html" />
+
+così se faccio il submit alla form, mi rimanderà alla form stessa
+dopo aver fatto un input
+
+posso vedere come arrivano i parametri sul server:
+lo leggo nella console di eclipse (dove sta correndo il server Tomcat avviato mediante le librerie Spring):
+
+redirect = /form.html
+  nome = asd
+  password = asdafagg
+
+
+Logging
+
+libreria utile per il logging: log4j, libreria standard logging (appesantiscono un po' l'applicazione)
+slf4j -> più leggera! non è proprio una libreria, ma un'interfaccia -> posso usarla, e poi fare il log
+con log4j o la standard
+
+
+style sheet:
+
+user agent (definito dall'utente), oppure definita dalla pagina, che ha la preminenza sullo user agent (la sovrascrive)
+
+
+ordine degli stili in css:
+
+<h1 class="bigTitle" id="mainTitle" /> 
+
+proprità: tipo, poi class, poi id
+
+priorità 100:
+	h1{color:black;}
+priorità 010:
+	@bigTitle {color:white;}
+priorità 001;
+	#mainTitle{color:blue}
+
+i sottoelementi ereditano:
+
+
+div.header > h1
+(ha priorità 012)
+
+div.header > h1.red
+(priorità 022, quindi maggiore)
+
+se ne ho due con priorità stessa, posso usare '!important'
+
+
+
+
+creare un test in automatico: tasto destro sulla clase -> new -> other -> junit test case -> scegliere junit 4

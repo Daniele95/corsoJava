@@ -1,14 +1,14 @@
-package com.gft.esempi;
+package com.gft.esempi.test;
 
 import com.gft.esempi.esercizi.Fibonacci;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class test {
+public class testFibonacci {
 
 	@Test
-	public void testFibonacci() {
+	public void testFibonacci1() {
 		assertEquals( 1, Fibonacci.fibonacci(1));		
 	}
 	@Test
